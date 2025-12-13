@@ -1,0 +1,54 @@
+[
+  {
+    "id": 1,
+    "slug": "billing-management-system",
+    "title": "Billing Management System",
+    "category": "Web",
+    "description": "A streamlined billing platform with invoice generation, product management, customer records, and automated total calculations.",
+    "image": "https://images.pexels.com/photos/4386373/pexels-photo-4386373.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "tags": [
+      "Typescript",
+      "Node.js",
+      "Supabase",
+      "Tailwind CSS"
+    ],
+    "github": "https://github.com/Dhinesh71/DRYWASH_WEBAPP.git",
+    "liveDemo": "https://drywash-webapp.vercel.app/order",
+    "featured": true
+  },
+  {
+    "id": 2,
+    "slug": "real-time-bus-tracker",
+    "title": "Real-Time Bus Tracking System",
+    "category": "Web + IoT + AI",
+    "description": "A live bus tracking platform with route selection, map visualization, passenger count using AI camera detection, and multilingual UI.",
+    "image": "/bus-tracker.png",
+    "tags": [
+      "React",
+      "Supabase",
+      "FastAPI",
+      "YOLO AI Model",
+      "Google Maps API"
+    ],
+    "github": "https://github.com/bustracker94-glitch/bustracker.git",
+    "liveDemo": "https://bustracker-ivory.vercel.app/",
+    "featured": true
+  },
+  {
+    "id": 3,
+    "slug": "quiz-master-app",
+    "title": "Quiz Master – Interactive Quiz Platform",
+    "category": "Web",
+    "description": "A gamified quiz platform with timed questions, score tracking, admin question upload, and responsive UI for students.",
+    "image": "https://images.pexels.com/photos/7092508/pexels-photo-7092508.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "tags": [
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB"
+    ],
+    "github": "https://github.com/Dhinesh71/quizz-master.git",
+    "liveDemo": "https://quizz-master-two.vercel.app/",
+    "featured": false
+  }
+]

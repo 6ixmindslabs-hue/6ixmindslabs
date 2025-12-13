@@ -1,0 +1,197 @@
+[
+    {
+        "name": "Dhinesh",
+        "title": "Founder & CEO — Full-Stack · AI",
+        "role": "Founder & CEO",
+        "microBio": "Founder who leads product vision and mentors interns. Builds full-stack web apps and AI models; responsible for roadmap, client tech reviews, and internship mentoring.",
+        "photo": "/Dhinesh.jpg",
+        "email": "dhinesh@6ixmindslabs.com",
+        "fullBio": "Founder and product lead. Manages roadmap, client conversations, and mentors interns to build deployable projects.",
+        "responsibilities": [
+            "Define product vision and roadmap",
+            "Lead client technical reviews and scoping",
+            "Mentor interns and review deliverables",
+            "Oversee AI model development and full-stack integrations"
+        ],
+        "techStack": [
+            "JavaScript (Node/React)",
+            "Python (ML)",
+            "Docker",
+            "PostgreSQL",
+            "Cloud basics"
+        ],
+        "projects": [
+            {
+                "title": "DevOps Dashboard",
+                "summary": "Cloud-agnostic real-time deployment dashboard."
+            },
+            {
+                "title": "Fake News Detector",
+                "summary": "NLP classifier prototype for news verification."
+            }
+        ],
+        "order": 1,
+        "active": true
+    },
+    {
+        "name": "Dileep",
+        "title": "Co-Founder & CTO — IoT & Embedded Systems",
+        "role": "Co-Founder & CTO",
+        "microBio": "Designs and prototypes sensor systems and embedded devices. Owns hardware development, firmware, and IoT-to-cloud integrations for client & student projects.",
+        "photo": "/Dileep.jpg",
+        "email": "dileep@6ixmindslabs.com",
+        "fullBio": "Head of hardware and embedded engineering, builds prototypes and connects sensors to cloud.",
+        "responsibilities": [
+            "Lead IoT hardware and firmware development",
+            "Architect device-to-cloud integrations",
+            "Oversee production-ready prototypes"
+        ],
+        "techStack": [
+            "C/C++",
+            "ESP32/Arduino",
+            "MQTT",
+            "Sensors",
+            "Embedded Linux"
+        ],
+        "projects": [
+            {
+                "title": "Bus Occupancy Sensor",
+                "summary": "Prototype sensor system with cloud reporting."
+            },
+            {
+                "title": "Environmental Monitor",
+                "summary": "Real-time sensor dashboard."
+            }
+        ],
+        "order": 2,
+        "active": true
+    },
+    {
+        "name": "Satish",
+        "title": "Co-Founder & CPO — UI / Frontend & Product Design",
+        "role": "Co-Founder & CPO",
+        "microBio": "Masters user experience and frontend implementation. Crafts UI, component library, and ensures products are accessible, responsive, and polished.",
+        "photo": "/Sathish.jpg",
+        "email": "satish@6ixmindslabs.com",
+        "fullBio": "Product design lead responsible for UX, frontend components, and design systems.",
+        "responsibilities": [
+            "Lead UI/UX and product interactions",
+            "Build component libraries and accessibility standards",
+            "Prototype and validate user flows"
+        ],
+        "techStack": [
+            "HTML/CSS",
+            "React",
+            "Figma",
+            "Tailwind/Tokens"
+        ],
+        "projects": [
+            {
+                "title": "Customer Dashboard UI",
+                "summary": "Modern dashboard UI for admin users."
+            },
+            {
+                "title": "Spline Floating Mobile",
+                "summary": "Interactive web component for homepage."
+            }
+        ],
+        "order": 3,
+        "active": true
+    },
+    {
+        "name": "Prabhakaran",
+        "title": "COO — Backend & DevOps",
+        "role": "COO",
+        "microBio": "Backend architect and deployment lead. Manages APIs, databases, CI/CD pipelines, cloud infra, and system reliability for projects and client deliveries.",
+        "photo": "/Prabhakaran.jpg",
+        "email": "prabhakaran@6ixmindslabs.com",
+        "fullBio": "Operations lead responsible for reliable backends and smooth deployments.",
+        "responsibilities": [
+            "Backend architecture & API design",
+            "CI/CD, monitoring, and reliability",
+            "Manage project delivery and timelines"
+        ],
+        "techStack": [
+            "Node/Express",
+            "PostgreSQL",
+            "Supabase",
+            "Docker",
+            "CI tools"
+        ],
+        "projects": [
+            {
+                "title": "Bus Tracking Backend",
+                "summary": "Location & ticketing backend."
+            },
+            {
+                "title": "Notification Engine",
+                "summary": "Event-driven alert system."
+            }
+        ],
+        "order": 4,
+        "active": true
+    },
+    {
+        "name": "Nithish Kumar",
+        "title": "CMO — Growth & Partnerships",
+        "role": "CMO",
+        "microBio": "Drives marketing, college partnerships, client outreach, and community growth. Manages social, placements, and PR to connect students with opportunities.",
+        "photo": "/NithishKumar.jpg",
+        "email": "nithish@6ixmindslabs.com",
+        "fullBio": "Growth lead driving outreach, partnerships, and student acquisition.",
+        "responsibilities": [
+            "Lead marketing strategy & content",
+            "Build college partnerships and placement channels",
+            "Manage PR and social campaigns"
+        ],
+        "techStack": [
+            "SEO",
+            "Social media",
+            "Community outreach",
+            "Partnerships"
+        ],
+        "projects": [
+            {
+                "title": "Internship Campaign",
+                "summary": "College outreach campaign that recruited students."
+            },
+            {
+                "title": "Brand Launch",
+                "summary": "Web + social brand rollout."
+            }
+        ],
+        "order": 5,
+        "active": true
+    },
+    {
+        "name": "Anandh",
+        "title": "CHRO & Head of Training",
+        "role": "CHRO & Head of Training",
+        "microBio": "Designs internship structure, assesses students, and coordinates mentors. Ensures learning outcomes, evaluation, and placement-ready deliverables.",
+        "photo": "/images/team/anandh.jpg",
+        "email": "anandh@6ixmindslabs.com",
+        "fullBio": "Education lead ensuring internship quality and student outcomes.",
+        "responsibilities": [
+            "Design internship curriculum and assessments",
+            "Onboard and mentor students",
+            "Coordinate mentors and placement readiness"
+        ],
+        "techStack": [
+            "Curriculum design",
+            "Mentorship",
+            "Student assessment"
+        ],
+        "projects": [
+            {
+                "title": "Internship Syllabus",
+                "summary": "Structured project-based curriculum."
+            },
+            {
+                "title": "Student Demo Day",
+                "summary": "Placement-focused project presentation."
+            }
+        ],
+        "order": 6,
+        "active": true
+    }
+]

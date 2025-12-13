@@ -1,0 +1,20 @@
+[
+  {
+    "cert_id": "6ML-IN-2025-00001",
+    "student_name": "Rahul Kumar",
+    "internship_title": "Web Development Internship",
+    "project_title": "E-commerce Platform",
+    "issue_date": "2025-01-15",
+    "skills": ["React", "Node.js", "MongoDB", "REST APIs"],
+    "qr_code": "https://verify.6ixmindslabs.com/6ML-IN-2025-00001"
+  },
+  {
+    "cert_id": "6ML-IN-2025-00002",
+    "student_name": "Priya Sharma",
+    "internship_title": "IoT & Embedded Systems Internship",
+    "project_title": "Smart Home Automation",
+    "issue_date": "2025-01-20",
+    "skills": ["Arduino", "ESP32", "Sensors", "MQTT"],
+    "qr_code": "https://verify.6ixmindslabs.com/6ML-IN-2025-00002"
+  }
+]

@@ -1,0 +1,192 @@
+[
+  {
+    "id": 1,
+    "slug": "web-development",
+    "title": "Web Development Internship",
+    "domain": "Web & App Development",
+    "duration": "2 Weeks / 1 Month",
+    "price": 2000,
+    "description": "Build real-world web applications using React, Node.js, and modern development tools.",
+    "skills": [
+      "React",
+      "Node.js",
+      "MongoDB",
+      "REST APIs",
+      "Git",
+      "HTML/CSS"
+    ],
+    "projects": [
+      "E-commerce website",
+      "Social media dashboard",
+      "Portfolio builder"
+    ],
+    "durationOptions": {
+      "2Weeks": {
+        "price": 2000,
+        "durationLabel": "2 Weeks",
+        "learningOutcome": "Students learn the fundamentals of frontend + backend basics. They become capable of building small functional apps with simple APIs.",
+        "whatTheyCanLearn": [
+          "HTML, CSS, JavaScript basics",
+          "React components, props, hooks",
+          "Connecting frontend to APIs",
+          "Intro to Node.js & Express",
+          "MongoDB CRUD basics",
+          "Git fundamentals"
+        ],
+        "projectCapacity": "They can complete **1 small project** (functional but limited UI).",
+        "exampleProjects": [
+          "Task Manager App",
+          "Simple Login + Dashboard",
+          "Basic Quiz App"
+        ]
+      },
+      "1Month": {
+        "price": 4000,
+        "durationLabel": "1 Month",
+        "learningOutcome": "Students reach a solid beginner–intermediate level. They can build full-stack apps with authentication and deployment.",
+        "whatTheyCanLearn": [
+          "Responsive UI, reusable components",
+          "React Router & API integration",
+          "State management patterns",
+          "Full Express backend with routes",
+          "MongoDB schemas & authentication",
+          "Cloud deployment workflows",
+          "Real-world Git & project structure"
+        ],
+        "projectCapacity": "They can complete **one major full-stack project** + **one mini-project**.",
+        "exampleProjects": [
+          "E-commerce mini-store with auth, cart, and admin",
+          "Social media dashboard with CRUD posts",
+          "Portfolio website builder with templates"
+        ]
+      }
+    },
+    "certificate": true,
+    "featured": true
+  },
+  {
+    "id": 2,
+    "slug": "iot-embedded",
+    "title": "IoT & Embedded Systems Internship",
+    "domain": "Embedded & IoT",
+    "duration": "2 Weeks / 1 Month",
+    "price": 2000,
+    "description": "Hands-on experience with IoT devices, sensors, and embedded programming.",
+    "skills": [
+      "Arduino",
+      "ESP32",
+      "Sensors",
+      "MQTT",
+      "Cloud IoT"
+    ],
+    "projects": [
+      "Smart home automation",
+      "Weather monitoring",
+      "IoT security system"
+    ],
+    "durationOptions": {
+      "2Weeks": {
+        "price": 2000,
+        "durationLabel": "2 Weeks",
+        "learningOutcome": "Students understand core microcontroller programming and basic sensor handling. They can build simple working prototypes.",
+        "whatTheyCanLearn": [
+          "Arduino & ESP32 basics",
+          "Reading sensors (temperature, motion, LDR)",
+          "Driving actuators (motors, relays, LEDs)",
+          "Simple automation logic",
+          "Intro to MQTT & cloud dashboards"
+        ],
+        "projectCapacity": "They can build **1 working IoT prototype** connected to a cloud dashboard.",
+        "exampleProjects": [
+          "Weather station with live readings",
+          "Basic smart home automation",
+          "Security alarm with motion sensor"
+        ]
+      },
+      "1Month": {
+        "price": 4000,
+        "durationLabel": "1 Month",
+        "learningOutcome": "Students become capable of building full IoT systems with sensors, cloud integration, automation, and dashboards.",
+        "whatTheyCanLearn": [
+          "ESP32 WiFi programming",
+          "MQTT publish/subscribe system",
+          "Advanced sensor calibration",
+          "Cloud IoT dashboards (Node-RED, Thingspeak, Firebase)",
+          "Automation rules & real-time alerts",
+          "Basic PCB design concepts"
+        ],
+        "projectCapacity": "They can finish **one advanced IoT project** + **one smaller prototype**.",
+        "exampleProjects": [
+          "Home automation system with cloud control",
+          "Smart agriculture monitoring with auto irrigation",
+          "IoT surveillance alert system with notifications"
+        ]
+      }
+    },
+    "certificate": true,
+    "featured": true
+  },
+  {
+    "id": 3,
+    "slug": "pcb-design",
+    "title": "PCB Design Internship",
+    "domain": "Hardware & PCB Design",
+    "duration": "2 Weeks / 1 Month",
+    "price": 2000,
+    "badge": "From ₹2000",
+    "description": "Hands-on internship focused on PCB design workflow — schematic capture, PCB layout, producing Gerbers, and preparing a manufacturable board. Ideal for makers and embedded engineers who want practical PCB skills.",
+    "skills": [
+      "Schematic Capture",
+      "PCB Layout",
+      "KiCad / Eagle",
+      "Gerber Files",
+      "BOM & DFM",
+      "Soldering & Assembly",
+      "SMT/THT",
+      "PCB Testing"
+    ],
+    "projects": [
+      "Single-layer LED PCB ( soldering practice )",
+      "IoT sensor node PCB with header connector",
+      "Motor driver PCB (power traces, thermal considerations)"
+    ],
+    "durationOptions": {
+      "2Weeks": {
+        "price": 2000,
+        "durationLabel": "2 Weeks",
+        "learningOutcome": "Understand PCB workflow: schematic capture, basic PCB layout, hand-soldering, and generating Gerber/BOM for manufacturing.",
+        "whatTheyCanLearn": [
+          "KiCad/Eagle basics",
+          "Schematic to PCB flow",
+          "PCB stacking, footprints and footprint creation",
+          "Generating Gerber files and BOM",
+          "Basic soldering and testing"
+        ],
+        "projectCapacity": "They can complete **1 basic PCB design** with hand-soldering practice.",
+        "exampleProjects": [
+          "Single-layer LED board",
+          "Small sensor breakout PCB"
+        ]
+      },
+      "1Month": {
+        "price": 4000,
+        "durationLabel": "1 Month",
+        "learningOutcome": "Complete PCB design projects with manufacturable outputs and testing: multi-layer basics, design for manufacturability, assembly, and debugging.",
+        "whatTheyCanLearn": [
+          "Multi-layer routing basics",
+          "Power plane and thermal vias",
+          "DFM checks and component placement for yield",
+          "Preparing assembly drawings and pick & place files",
+          "Prototype testing and debugging"
+        ],
+        "projectCapacity": "They can complete **one major PCB project** + **one smaller design**.",
+        "exampleProjects": [
+          "IoT sensor node with power regulator",
+          "Motor driver PCB with heat management"
+        ]
+      }
+    },
+    "certificate": true,
+    "featured": true
+  }
+]

@@ -1,0 +1,146 @@
+[
+    {
+        "id": 1,
+        "name": "Dhinesh",
+        "role": "Founder & CEO",
+        "title": "Founder & CEO — Full-Stack · AI",
+        "bio": "Founder who leads product vision and mentors interns. Builds full-stack web apps.",
+        "microBio": "Founder who leads product vision and mentors interns. Builds full-stack web apps.",
+        "fullBio": "Founder who leads product vision and mentors interns. Builds full-stack web apps. Specializes in MERN stack and Artificial Intelligence solutions.",
+        "photo": "",
+        "email": "dhinesh@6ixmindslabs.com",
+        "order": 1,
+        "active": true,
+        "responsibilities": [
+            "Product Vision",
+            "Full-Stack Development",
+            "Internship Mentorship"
+        ],
+        "techStack": [
+            "React",
+            "Node.js",
+            "Python",
+            "TensorFlow"
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Dileep",
+        "role": "Co-Founder & CTO",
+        "title": "Co-Founder & CTO — IoT & Embedded Systems",
+        "bio": "Designs and prototypes carrier systems and embedded devices. Owns hardware architecture.",
+        "microBio": "Designs and prototypes carrier systems and embedded devices. Owns hardware architecture.",
+        "fullBio": "Designs and prototypes carrier systems and embedded devices. Owns hardware architecture. Expert in PCB design, microcontrollers, and IoT protocols.",
+        "photo": "",
+        "email": "dileep@6ixmindslabs.com",
+        "order": 2,
+        "active": true,
+        "responsibilities": [
+            "Hardware Architecture",
+            "Embedded Systems",
+            "IoT Solutions"
+        ],
+        "techStack": [
+            "Arduino",
+            "Raspberry Pi",
+            "C++",
+            "PCB Design"
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Satish",
+        "role": "Co-Founder & CPO",
+        "title": "Co-Founder & CPO — UI / Frontend & Product Design",
+        "bio": "Mediates user experience and frontend implementation. Crafts UI, component libraries, and aesthetics.",
+        "microBio": "Mediates user experience and frontend implementation. Crafts UI, component libraries, and aesthetics.",
+        "fullBio": "Mediates user experience and frontend implementation. Crafts UI, component libraries, and aesthetics. Passionate about creating intuitive and beautiful digital experiences.",
+        "photo": "",
+        "email": "satish@6ixmindslabs.com",
+        "order": 3,
+        "active": true,
+        "responsibilities": [
+            "User Experience",
+            "UI Design",
+            "Frontend Architecture"
+        ],
+        "techStack": [
+            "React",
+            "Tailwind CSS",
+            "Figma",
+            "Adobe XD"
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Prabhakaran",
+        "role": "COO",
+        "title": "COO — Backend & DevOps",
+        "bio": "Backend architect and deployment lead. Manages APIs, databases, CI/CD pipelines, and cloud infrastructure.",
+        "microBio": "Backend architect and deployment lead. Manages APIs, databases, CI/CD pipelines, and cloud infrastructure.",
+        "fullBio": "Backend architect and deployment lead. Manages APIs, databases, CI/CD pipelines, and cloud infrastructure. Ensures system reliability and scalability.",
+        "photo": "",
+        "email": "prabhakaran@6ixmindslabs.com",
+        "order": 4,
+        "active": true,
+        "responsibilities": [
+            "Backend Architecture",
+            "DevOps",
+            "Cloud Infrastructure"
+        ],
+        "techStack": [
+            "Node.js",
+            "Express",
+            "MongoDB",
+            "Docker",
+            "AWS"
+        ]
+    },
+    {
+        "id": 5,
+        "name": "Nithish Kumar",
+        "role": "CMO",
+        "title": "CMO — Growth & Partnerships",
+        "bio": "Drives marketing, college partnerships, and community growth. Connects students with opportunities.",
+        "microBio": "Drives marketing, college partnerships, and community growth. Connects students with opportunities.",
+        "fullBio": "Drives marketing, college partnerships, and community growth. Connects students with opportunities. Focuses on brand building and strategic collaborations.",
+        "photo": "",
+        "email": "nithish@6ixmindslabs.com",
+        "order": 5,
+        "active": true,
+        "responsibilities": [
+            "Marketing Strategy",
+            "Partnerships",
+            "Community Growth"
+        ],
+        "techStack": [
+            "Digital Marketing",
+            "SEO",
+            "Content Strategy",
+            "Analytics"
+        ]
+    },
+    {
+        "id": 6,
+        "name": "Anandh",
+        "role": "CHRO",
+        "title": "CHRO & Head of Training",
+        "bio": "Designs internship structure, educates students, and coordinates mentors. Ensures learning quality.",
+        "microBio": "Designs internship structure, educates students, and coordinates mentors. Ensures learning quality.",
+        "fullBio": "Designs internship structure, educates students, and coordinates mentors. Ensures learning quality. Committed to student success and skill development.",
+        "photo": "",
+        "email": "anandh@6ixmindslabs.com",
+        "order": 6,
+        "active": true,
+        "responsibilities": [
+            "Training Curriculum",
+            "Intern Coordination",
+            "HR Management"
+        ],
+        "techStack": [
+            "Curriculum Design",
+            "Mentorship",
+            "HR Platforms"
+        ]
+    }
+]
