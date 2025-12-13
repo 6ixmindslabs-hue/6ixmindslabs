@@ -54,36 +54,7 @@ const MemberModal = ({ member, onClose }) => {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="font-bold text-lg mb-4 flex items-center">
-                <span className="w-8 h-8 rounded-full bg-purple-100 text-brand-purple flex items-center justify-center mr-3 text-sm">✓</span>
-                Key Responsibilities
-              </h3>
-              <ul className="space-y-2">
-                {member.responsibilities.map((resp, i) => (
-                  <li key={i} className="flex items-start text-gray-600 text-sm">
-                    <span className="mr-2">•</span>
-                    {resp}
-                  </li>
-                ))}
-              </ul>
-            </div>
 
-            <div>
-              <h3 className="font-bold text-lg mb-4 flex items-center">
-                <span className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-3 text-sm">🛠</span>
-                Core Tech Stack
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {member.techStack.map((tech, i) => (
-                  <span key={i} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium border border-gray-200">
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
       </motion.div>
     </div>
