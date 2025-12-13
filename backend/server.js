@@ -52,6 +52,15 @@ const loginLimiter = rateLimit({
 // Routes
 // ============================================
 
+// Root route
+app.get('/', (req, res) => {
+    res.json({
+        success: true,
+        message: '6ixminds Labs Backend API is running. Access endpoints at /api/...',
+        timestamp: new Date().toISOString(),
+    });
+});
+
 // Health check
 app.get('/health', (req, res) => {
     res.json({
