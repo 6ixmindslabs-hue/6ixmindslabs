@@ -196,7 +196,7 @@ export default function About() {
         <div className="max-w-6xl mx-auto">
           {/* Two Column Grid for Mission and Vision */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
-            {/* Mission Column */}
+            {/* Vision Column */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -204,15 +204,15 @@ export default function About() {
               transition={{ duration: 0.6 }}
               className="text-center"
             >
-              <span className="text-brand-purple font-semibold tracking-wider uppercase text-sm">OUR PURPOSE</span>
-              <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-6">Our Mission</h2>
+
+              <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-6">Our Vision</h2>
               <div className="h-1 w-20 bg-gradient-to-r from-brand-purple to-brand-pink mx-auto rounded-full mb-8"></div>
               <p className="text-lg text-gray-600 leading-relaxed">
-                To turn students into job-ready engineers, provide startups with end-to-end tech services, and make practical engineering accessible through real deployment and modern tools.
+                To build India's most trusted engineering ecosystem where young developers learn by creating, startups scale through real tech, and innovation becomes accessible to everyone—from idea to deployment.
               </p>
             </motion.div>
 
-            {/* Vision Column */}
+            {/* Mission Column */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -220,11 +220,11 @@ export default function About() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-center"
             >
-              <span className="text-brand-purple font-semibold tracking-wider uppercase text-sm">OUR VISION</span>
-              <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-6">Our Vision</h2>
+
+              <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-6">Our Mission</h2>
               <div className="h-1 w-20 bg-gradient-to-r from-brand-purple to-brand-pink mx-auto rounded-full mb-8"></div>
               <p className="text-lg text-gray-600 leading-relaxed">
-                To build India's most trusted engineering ecosystem where young developers learn by creating, startups scale through real tech, and innovation becomes accessible to everyone—from idea to deployment.
+                To turn students into job-ready engineers, provide startups with end-to-end tech services, and make practical engineering accessible through real deployment and modern tools.
               </p>
             </motion.div>
           </div>
