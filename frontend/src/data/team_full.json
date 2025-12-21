@@ -1,197 +1,152 @@
 [
-    {
-        "name": "Dhinesh",
-        "title": "Founder & CEO — Full-Stack · AI",
-        "role": "Founder & CEO",
-        "microBio": "Founder who leads product vision and mentors interns. Builds full-stack web apps and AI models; responsible for roadmap, client tech reviews, and internship mentoring.",
-        "photo": "/Dhinesh.jpg",
-        "email": "dhinesh@6ixmindslabs.com",
-        "fullBio": "Founder and product lead. Manages roadmap, client conversations, and mentors interns to build deployable projects.",
-        "responsibilities": [
-            "Define product vision and roadmap",
-            "Lead client technical reviews and scoping",
-            "Mentor interns and review deliverables",
-            "Oversee AI model development and full-stack integrations"
-        ],
-        "techStack": [
-            "JavaScript (Node/React)",
-            "Python (ML)",
-            "Docker",
-            "PostgreSQL",
-            "Cloud basics"
-        ],
-        "projects": [
-            {
-                "title": "DevOps Dashboard",
-                "summary": "Cloud-agnostic real-time deployment dashboard."
-            },
-            {
-                "title": "Fake News Detector",
-                "summary": "NLP classifier prototype for news verification."
-            }
-        ],
-        "order": 1,
-        "active": true
-    },
-    {
-        "name": "Dileep",
-        "title": "Co-Founder & CTO — IoT & Embedded Systems",
-        "role": "Co-Founder & CTO",
-        "microBio": "Designs and prototypes sensor systems and embedded devices. Owns hardware development, firmware, and IoT-to-cloud integrations for client & student projects.",
-        "photo": "/Dileep.jpg",
-        "email": "dileep@6ixmindslabs.com",
-        "fullBio": "Head of hardware and embedded engineering, builds prototypes and connects sensors to cloud.",
-        "responsibilities": [
-            "Lead IoT hardware and firmware development",
-            "Architect device-to-cloud integrations",
-            "Oversee production-ready prototypes"
-        ],
-        "techStack": [
-            "C/C++",
-            "ESP32/Arduino",
-            "MQTT",
-            "Sensors",
-            "Embedded Linux"
-        ],
-        "projects": [
-            {
-                "title": "Bus Occupancy Sensor",
-                "summary": "Prototype sensor system with cloud reporting."
-            },
-            {
-                "title": "Environmental Monitor",
-                "summary": "Real-time sensor dashboard."
-            }
-        ],
-        "order": 2,
-        "active": true
-    },
-    {
-        "name": "Satish",
-        "title": "Co-Founder & CPO — UI / Frontend & Product Design",
-        "role": "Co-Founder & CPO",
-        "microBio": "Masters user experience and frontend implementation. Crafts UI, component library, and ensures products are accessible, responsive, and polished.",
-        "photo": "/Sathish.jpg",
-        "email": "satish@6ixmindslabs.com",
-        "fullBio": "Product design lead responsible for UX, frontend components, and design systems.",
-        "responsibilities": [
-            "Lead UI/UX and product interactions",
-            "Build component libraries and accessibility standards",
-            "Prototype and validate user flows"
-        ],
-        "techStack": [
-            "HTML/CSS",
-            "React",
-            "Figma",
-            "Tailwind/Tokens"
-        ],
-        "projects": [
-            {
-                "title": "Customer Dashboard UI",
-                "summary": "Modern dashboard UI for admin users."
-            },
-            {
-                "title": "Spline Floating Mobile",
-                "summary": "Interactive web component for homepage."
-            }
-        ],
-        "order": 3,
-        "active": true
-    },
-    {
-        "name": "Prabhakaran",
-        "title": "COO — Backend & DevOps",
-        "role": "COO",
-        "microBio": "Backend architect and deployment lead. Manages APIs, databases, CI/CD pipelines, cloud infra, and system reliability for projects and client deliveries.",
-        "photo": "/Prabhakaran.jpg",
-        "email": "prabhakaran@6ixmindslabs.com",
-        "fullBio": "Operations lead responsible for reliable backends and smooth deployments.",
-        "responsibilities": [
-            "Backend architecture & API design",
-            "CI/CD, monitoring, and reliability",
-            "Manage project delivery and timelines"
-        ],
-        "techStack": [
-            "Node/Express",
-            "PostgreSQL",
-            "Supabase",
-            "Docker",
-            "CI tools"
-        ],
-        "projects": [
-            {
-                "title": "Bus Tracking Backend",
-                "summary": "Location & ticketing backend."
-            },
-            {
-                "title": "Notification Engine",
-                "summary": "Event-driven alert system."
-            }
-        ],
-        "order": 4,
-        "active": true
-    },
-    {
-        "name": "Nithish Kumar",
-        "title": "CMO — Growth & Partnerships",
-        "role": "CMO",
-        "microBio": "Drives marketing, college partnerships, client outreach, and community growth. Manages social, placements, and PR to connect students with opportunities.",
-        "photo": "/NithishKumar.jpg",
-        "email": "nithish@6ixmindslabs.com",
-        "fullBio": "Growth lead driving outreach, partnerships, and student acquisition.",
-        "responsibilities": [
-            "Lead marketing strategy & content",
-            "Build college partnerships and placement channels",
-            "Manage PR and social campaigns"
-        ],
-        "techStack": [
-            "SEO",
-            "Social media",
-            "Community outreach",
-            "Partnerships"
-        ],
-        "projects": [
-            {
-                "title": "Internship Campaign",
-                "summary": "College outreach campaign that recruited students."
-            },
-            {
-                "title": "Brand Launch",
-                "summary": "Web + social brand rollout."
-            }
-        ],
-        "order": 5,
-        "active": true
-    },
-    {
-        "name": "Anandh",
-        "title": "CHRO & Head of Training",
-        "role": "CHRO & Head of Training",
-        "microBio": "Designs internship structure, assesses students, and coordinates mentors. Ensures learning outcomes, evaluation, and placement-ready deliverables.",
-        "photo": "/images/team/anandh.jpg",
-        "email": "anandh@6ixmindslabs.com",
-        "fullBio": "Education lead ensuring internship quality and student outcomes.",
-        "responsibilities": [
-            "Design internship curriculum and assessments",
-            "Onboard and mentor students",
-            "Coordinate mentors and placement readiness"
-        ],
-        "techStack": [
-            "Curriculum design",
-            "Mentorship",
-            "Student assessment"
-        ],
-        "projects": [
-            {
-                "title": "Internship Syllabus",
-                "summary": "Structured project-based curriculum."
-            },
-            {
-                "title": "Student Demo Day",
-                "summary": "Placement-focused project presentation."
-            }
-        ],
-        "order": 6,
-        "active": true
-    }
+  {
+    "name": "Dhinesh",
+    "title": "Founder & CEO",
+    "role": "Founder & CEO",
+    "microBio": "Founder leading company vision, technical direction, and internship programs. Builds full-stack applications and mentors students with a fundamentals-first approach.",
+    "photo": "/Dhinesh.jpg",
+    "email": "dhinesh@6ixmindslabs.com",
+    "fullBio": "Dhinesh is the founder and CEO of 6ixminds Labs. He leads the company vision, technical strategy, and overall execution. With hands-on experience in full-stack development, he focuses on building practical solutions and structured internship programs that prepare students for real-world development.",
+    "responsibilities": [
+      "Define company vision and execution strategy",
+      "Lead technical architecture and development",
+      "Design and manage internship training programs",
+      "Mentor students and review project deliverables"
+    ],
+    "techStack": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "Node.js",
+      "MongoDB",
+      "Basic Cloud"
+    ],
+    "projects": [
+      {
+        "title": "Internship Training Platform",
+        "summary": "Project-based web development training system."
+      },
+      {
+        "title": "Certificate Verification System",
+        "summary": "Online certificate generation and verification portal."
+      }
+    ],
+    "order": 1,
+    "active": true
+  },
+  {
+    "name": "Dileep",
+    "title": "Co-Founder & Operations Lead",
+    "role": "Co-Founder & Operations Lead",
+    "microBio": "Co-founder supporting operations and learning embedded systems and IoT fundamentals through hands-on projects.",
+    "photo": "/Dileep.jpg",
+    "email": "dileep@6ixmindslabs.com",
+    "fullBio": "Dileep is a co-founder of 6ixminds Labs, contributing to operational coordination and embedded systems learning. He supports internal workflows and participates in embedded and IoT-related projects under guided execution.",
+    "responsibilities": [
+      "Support daily operations and coordination",
+      "Assist in project execution",
+      "Learn and apply embedded systems fundamentals",
+      "Support training and internal activities"
+    ],
+    "techStack": [
+      "Embedded basics",
+      "Arduino",
+      "ESP32",
+      "Sensors",
+      "IoT fundamentals"
+    ],
+    "projects": [],
+    "order": 2,
+    "active": true
+  },
+  {
+    "name": "Prabhakaran",
+    "title": "Project Manager & Advisor",
+    "role": "Project Manager & Advisor",
+    "microBio": "Manages project planning, execution flow, and provides guidance to ensure structured delivery.",
+    "photo": "/Prabhakaran.jpg",
+    "email": "prabhakaran@6ixmindslabs.com",
+    "fullBio": "Prabhakaran serves as the project manager and advisor at 6ixminds Labs. He oversees project planning, timelines, and execution while providing guidance to maintain clarity and structure across development and training initiatives.",
+    "responsibilities": [
+      "Plan and monitor project timelines",
+      "Guide teams on execution structure",
+      "Ensure discipline in project delivery",
+      "Provide technical and process advice"
+    ],
+    "techStack": [
+      "Project planning",
+      "Team coordination",
+      "Technical guidance"
+    ],
+    "projects": [],
+    "order": 3,
+    "active": true
+  },
+  {
+    "name": "Anandh",
+    "title": "IoT Developer",
+    "role": "IoT Developer",
+    "microBio": "Works on IoT development, hardware integration, and basic automation solutions.",
+    "photo": "/Anandh.jpg",
+    "email": "anandh@6ixmindslabs.com",
+    "fullBio": "Anandh works as an IoT developer at 6ixminds Labs, focusing on integrating hardware devices with software systems. His work includes sensor integration, device communication, and simple automation use cases.",
+    "responsibilities": [
+      "Develop IoT-based applications",
+      "Integrate sensors and devices",
+      "Support automation and hardware projects"
+    ],
+    "techStack": [
+      "ESP32",
+      "Sensors",
+      "IoT protocols",
+      "Basic dashboards"
+    ],
+    "projects": [],
+    "order": 4,
+    "active": true
+  },
+  {
+    "name": "Nithish Kumar",
+    "title": "Embedded & PCB Design Trainee",
+    "role": "Embedded & PCB Design Trainee",
+    "microBio": "Trainee learning embedded systems and PCB design through guided hands-on practice.",
+    "photo": "/NithishKumar.jpg",
+    "email": "nithish@6ixmindslabs.com",
+    "fullBio": "Nithish Kumar is a trainee at 6ixminds Labs focusing on embedded systems and PCB design fundamentals. He is learning circuit design, PCB layout basics, and embedded programming through practical exercises.",
+    "responsibilities": [
+      "Learn embedded systems fundamentals",
+      "Practice PCB design basics",
+      "Assist in hardware-based projects"
+    ],
+    "techStack": [
+      "Embedded basics",
+      "PCB design fundamentals",
+      "Circuit basics"
+    ],
+    "projects": [],
+    "order": 5,
+    "active": true
+  },
+  {
+    "name": "Sathish",
+    "title": "Media & Digital Marketing Executive",
+    "role": "Video Editing & Digital Marketing",
+    "microBio": "Handles video content creation and digital marketing activities for brand visibility.",
+    "photo": "/Sathish.jpg",
+    "email": "sathish@6ixmindslabs.com",
+    "fullBio": "Sathish manages video editing and digital marketing at 6ixminds Labs. He creates visual content, promotional materials, and supports online engagement for company services and training programs.",
+    "responsibilities": [
+      "Edit and produce video content",
+      "Manage digital marketing activities",
+      "Support brand communication and outreach"
+    ],
+    "techStack": [
+      "Video editing tools",
+      "Social media platforms",
+      "Digital marketing basics"
+    ],
+    "projects": [],
+    "order": 6,
+    "active": true
+  }
 ]
