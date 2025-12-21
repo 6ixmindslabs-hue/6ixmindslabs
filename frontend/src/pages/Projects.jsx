@@ -117,13 +117,7 @@ export default function Projects() {
                           </Button>
                         </a>
                       )}
-                      {project.github && (
-                        <a href={project.github} target="_blank" rel="noopener noreferrer" className="block">
-                          <Button variant="secondary" className="w-full justify-center">
-                            GitHub Repo
-                          </Button>
-                        </a>
-                      )}
+
                     </div>
                   </div>
                 </div>
