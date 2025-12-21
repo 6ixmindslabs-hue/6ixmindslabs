@@ -9,6 +9,7 @@ import Projects from './pages/Projects';
 import Internships from './pages/Internships';
 import Contact from './pages/Contact';
 import Verify from './pages/Verify';
+import VerifiedCertificate from './pages/VerifiedCertificate';
 
 // Admin imports
 import { AuthProvider } from './contexts/AuthContext';
@@ -88,10 +89,18 @@ export default function App() {
               <Footer />
             </div>
           } />
+
           <Route path="/verify" element={
             <div className="flex flex-col min-h-screen">
               <Navbar />
               <main className="flex-grow"><Verify /></main>
+              <Footer />
+            </div>
+          } />
+          <Route path="/verify/:certificateId" element={
+            <div className="flex flex-col min-h-screen">
+              <Navbar />
+              <main className="flex-grow"><VerifiedCertificate /></main>
               <Footer />
             </div>
           } />
