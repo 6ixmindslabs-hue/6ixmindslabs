@@ -152,9 +152,11 @@ export default function VerifiedCertificate() {
                             <div>
                                 <div className="flex items-center justify-between mb-8">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-purple-200">
-                                            6M
-                                        </div>
+                                        <img 
+                                            src="/logo.jpg" 
+                                            alt="6ixminds Labs" 
+                                            className="w-12 h-12 rounded-xl shadow-lg shadow-purple-200 object-cover" 
+                                        />
                                         <div>
                                             <h3 className="font-black text-gray-900 tracking-tight text-lg">6ixminds Labs</h3>
                                             <p className="text-[10px] text-purple-600 font-bold uppercase tracking-widest">Innovation Powered by Mind</p>
