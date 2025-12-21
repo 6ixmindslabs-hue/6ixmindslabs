@@ -294,7 +294,7 @@ export default function Contact() {
               </Card>
 
               <motion.a
-                href="https://wa.me/919080534488"
+                href="https://wa.me/919025873422"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.02 }}

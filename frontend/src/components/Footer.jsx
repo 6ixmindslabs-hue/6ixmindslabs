@@ -89,7 +89,7 @@ export default function Footer() {
               ))}
             </div>
             <motion.a
-              href="https://wa.me/919080534488"
+              href="https://wa.me/919025873422"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center space-x-2 px-4 py-3 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors shadow-lg"
