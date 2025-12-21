@@ -13,6 +13,7 @@ export default function AdminLayout() {
         { name: 'Dashboard', path: '/admin', icon: '📊', exact: true },
         { name: 'Internships', path: '/admin/internships', icon: '🎓' },
         { name: 'Projects', path: '/admin/projects', icon: '💼' },
+        { name: 'Showcase', path: '/admin/showcase', icon: '🏆' },
         { name: 'Certificates', path: '/admin/certificates', icon: '📜' },
         { name: 'Team', path: '/admin/team', icon: '👥' },
         { name: 'Pages', path: '/admin/pages', icon: '📄' },

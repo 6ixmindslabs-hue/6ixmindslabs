@@ -10,6 +10,7 @@ import Internships from './pages/Internships';
 import Contact from './pages/Contact';
 import Verify from './pages/Verify';
 import VerifiedCertificate from './pages/VerifiedCertificate';
+import Showcase from './pages/Showcase';
 
 // Admin imports
 import { AuthProvider } from './contexts/AuthContext';
@@ -20,6 +21,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminInternships from './pages/admin/AdminInternships';
 import AdminProjects from './pages/admin/AdminProjects';
 import AdminCertificates from './pages/admin/AdminCertificates';
+import AdminShowcase from './pages/admin/AdminShowcase';
 import AdminTeam from './pages/admin/AdminTeam';
 import AdminPages from './pages/admin/AdminPages';
 import AdminSettings from './pages/admin/AdminSettings';
@@ -51,6 +53,13 @@ export default function App() {
             <div className="flex flex-col min-h-screen">
               <Navbar />
               <main className="flex-grow"><Services /></main>
+              <Footer />
+            </div>
+          } />
+          <Route path="/showcase" element={
+            <div className="flex flex-col min-h-screen">
+              <Navbar />
+              <main className="flex-grow"><Showcase /></main>
               <Footer />
             </div>
           } />
@@ -117,6 +126,7 @@ export default function App() {
             <Route index element={<AdminDashboard />} />
             <Route path="internships" element={<AdminInternships />} />
             <Route path="projects" element={<AdminProjects />} />
+            <Route path="showcase" element={<AdminShowcase />} />
             <Route path="certificates" element={<AdminCertificates />} />
             <Route path="team" element={<AdminTeam />} />
             <Route path="pages" element={<AdminPages />} />

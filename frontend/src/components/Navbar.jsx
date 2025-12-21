@@ -12,6 +12,7 @@ export default function Navbar() {
     { name: 'About', path: '/about' },
     { name: 'Services', path: '/services' },
     { name: 'Projects', path: '/projects' },
+    { name: 'Showcase', path: '/showcase' },
     { name: 'Internships', path: '/internships' },
     { name: 'Contact', path: '/contact' },
   ];
@@ -167,8 +168,8 @@ export default function Navbar() {
                   to={link.path}
                   onClick={(e) => handleNavClick(link.path, e, true)}
                   className={`block px-4 py-3 rounded-xl transition-all ${isActive(link.path)
-                      ? 'bg-gradient-to-r from-brand-purple/10 to-brand-pink/10 text-brand-purple font-semibold'
-                      : 'text-gray-700 hover:bg-gray-50'
+                    ? 'bg-gradient-to-r from-brand-purple/10 to-brand-pink/10 text-brand-purple font-semibold'
+                    : 'text-gray-700 hover:bg-gray-50'
                     }`}
                 >
                   {link.name}

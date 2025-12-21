@@ -77,6 +77,7 @@ app.use('/api/projects', require('./routes/projects'));
 app.use('/api/internships', require('./routes/internships'));
 app.use('/api/certificates', require('./routes/certificates'));
 app.use('/api/messages', require('./routes/messages'));
+app.use('/api/showcase', require('./routes/showcase'));
 // app.use('/api/admin', require('./routes/admin'));
 // app.use('/api/pages', require('./routes/pages'));
 
