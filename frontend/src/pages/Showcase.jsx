@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import SEO from '../components/SEO';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 
@@ -73,6 +74,11 @@ export default function Showcase() {
 
     return (
         <div className="bg-gray-50 min-h-screen pb-20">
+            <SEO
+                title="Showcase"
+                description="See our achievements, student success stories, and recognition."
+                url="/showcase"
+            />
             {/* Header */}
             <section className="bg-white pt-24 pb-12 px-4 shadow-sm border-b border-gray-100">
                 <div className="max-w-7xl mx-auto text-center">
@@ -96,8 +102,8 @@ export default function Showcase() {
                                 key={cat}
                                 onClick={() => setFilter(cat)}
                                 className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all ${filter === cat
-                                        ? 'bg-gray-900 text-white shadow-lg scale-105'
-                                        : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
+                                    ? 'bg-gray-900 text-white shadow-lg scale-105'
+                                    : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
                                     }`}
                             >
                                 {categoryLabels[cat]}

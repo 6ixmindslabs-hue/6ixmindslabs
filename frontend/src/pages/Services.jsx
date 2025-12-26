@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import Card from '../components/Card';
 
@@ -100,6 +101,11 @@ export default function Services() {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO
+        title="Our Services"
+        description="Explore 6ixminds Labs services: Web Development, AI & Automation, and IoT Solutions."
+        url="/services"
+      />
       {/* Hero Section */}
       <section className="relative py-24 px-4 bg-gradient-to-br from-purple-50 via-white to-purple-50 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">

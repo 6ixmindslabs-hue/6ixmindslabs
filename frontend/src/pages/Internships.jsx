@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import SEO from '../components/SEO';
 import { Link, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Card from '../components/Card';
@@ -94,6 +95,11 @@ export default function Internships() {
 
     return (
       <div className="min-h-screen bg-white">
+        <SEO
+          title={`${internship.title} Internship`}
+          description={`Join our ${internship.title} internship program. Learn practical skills and build real projects.`}
+          url={`/internships/${internship.slug}`}
+        />
         <section className="relative py-20 px-4 bg-gradient-to-br from-purple-50 to-white">
           <div className="max-w-5xl mx-auto">
             <Link to="/internships" className="inline-flex items-center text-gray-600 hover:text-brand-purple mb-8 transition-colors">
@@ -264,6 +270,11 @@ export default function Internships() {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Internship Programs"
+        description="Join 6ixminds Labs internship programs: 2 Weeks to 1 Month intensive training."
+        url="/internships"
+      />
       <section className="relative py-20 px-4 bg-gradient-to-br from-purple-50 to-white">
         <div className="max-w-6xl mx-auto">
           <motion.div

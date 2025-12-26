@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import Button from '../components/Button';
 import Card from '../components/Card';
@@ -66,6 +67,7 @@ export default function Home() {
 
   return (
     <main className="bg-white">
+      <SEO />
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden hero-gradient">
         <div className="absolute inset-0 overflow-hidden">
           <motion.div

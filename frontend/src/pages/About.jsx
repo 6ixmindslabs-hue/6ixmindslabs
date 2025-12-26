@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import SEO from '../components/SEO';
 import Card from '../components/Card';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -140,6 +141,11 @@ export default function About() {
 
   return (
     <div className="min-h-screen bg-white text-gray-800">
+      <SEO
+        title="About Us"
+        description="Learn about 6ixminds Labs, a tech innovation hub built by young engineers specializing in Web, AI, IoT, and more."
+        url="/about"
+      />
       {/* JSON-LD Structured Data */}
       <script type="application/ld+json">
         {JSON.stringify({

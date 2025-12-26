@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import SEO from '../components/SEO';
 import { Link, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Card from '../components/Card';
@@ -58,6 +59,13 @@ export default function Projects() {
 
     return (
       <div className="min-h-screen bg-white">
+        <SEO
+          title={project.title}
+          description={project.description}
+          image={project.image}
+          url={`/projects/${project.slug}`}
+          type="article"
+        />
         <section className="relative py-20 px-4 bg-gradient-to-br from-purple-50 to-white">
           <div className="max-w-4xl mx-auto">
             <Link to="/projects" className="inline-flex items-center text-gray-600 hover:text-brand-purple mb-8 transition-colors">
@@ -136,6 +144,11 @@ export default function Projects() {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Projects"
+        description="Check out our featured projects in Web Development, AI, and IoT."
+        url="/projects"
+      />
       <section className="relative py-20 px-4 bg-gradient-to-br from-purple-50 to-white">
         <div className="max-w-6xl mx-auto">
           <motion.div

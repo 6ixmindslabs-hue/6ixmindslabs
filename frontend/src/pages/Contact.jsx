@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import SEO from '../components/SEO';
 import { useState, useRef } from 'react';
 import emailjs from '@emailjs/browser';
 import Card from '../components/Card';
@@ -99,6 +100,11 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Contact Us"
+        description="Get in touch with 6ixminds Labs for projects, internships, or inquiries."
+        url="/contact"
+      />
       <section className="relative py-20 px-4 bg-gradient-to-br from-purple-50 to-white">
         <div className="max-w-6xl mx-auto">
           <motion.div
