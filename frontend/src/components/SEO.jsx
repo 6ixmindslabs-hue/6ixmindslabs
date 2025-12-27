@@ -12,7 +12,7 @@ const SEO = ({ title, description, keywords, url, image, type = 'website' }) => 
       {/* Standard Metadata */}
       <title>{title ? `${title} | 6ixminds Labs` : siteTitle}</title>
       <meta name="description" content={description || defaultDescription} />
-      <meta name="keywords" content={keywords ? keywords : "web development, AI, tech solutions, 6ixminds Labs"} />
+      <meta name="keywords" content={keywords ? keywords : "web development, AI, tech solutions, 6ixminds Labs,sixmindslabs,6ixmindslab,"} />
       <link rel="canonical" href={url ? `${siteUrl}${url}` : siteUrl} />
 
       {/* Open Graph / Facebook */}
