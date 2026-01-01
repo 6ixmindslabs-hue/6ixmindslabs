@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
     const login = async (username, password) => {
         try {
             // TODO: Replace with actual API call
-            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
             const response = await fetch(`${API_URL}/api/admin/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -79,7 +79,7 @@ export const AuthProvider = ({ children }) => {
 
     const changePassword = async (currentPassword, newPassword) => {
         try {
-            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
             const response = await fetch(`${API_URL}/api/admin/change-password`, {
                 method: 'POST',
                 headers: {

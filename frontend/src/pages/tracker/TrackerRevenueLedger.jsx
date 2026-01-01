@@ -1,0 +1,219 @@
+import { useState, useEffect } from 'react';
+import { supabase } from '../../lib/supabase';
+import { BookOpen, TrendingUp, Download, Calendar, DollarSign, PieChart as PieIcon, Activity, ArrowUpRight } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, AreaChart, Area } from 'recharts';
+import { motion } from 'framer-motion';
+
+export default function TrackerRevenueLedger() {
+    const [ledgerData, setLedgerData] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchLedger();
+    }, []);
+
+    const fetchLedger = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('payments')
+                .select('*')
+                .order('payment_date', { ascending: false });
+
+            if (error) throw error;
+            setLedgerData(data || []);
+        } catch (error) {
+            console.error('Error fetching ledger:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const internshipRevenue = ledgerData.filter(p => p.type === 'Internship Fee').reduce((sum, p) => sum + (p.amount || 0), 0);
+    const projectRevenue = ledgerData.filter(p => p.type === 'Project Milestone').reduce((sum, p) => sum + (p.amount || 0), 0);
+    const productRevenue = ledgerData.filter(p => p.type === 'Product Sale').reduce((sum, p) => sum + (p.amount || 0), 0);
+    const totalRevenue = internshipRevenue + projectRevenue + productRevenue;
+
+    const revenueByType = [
+        { name: 'Training', value: internshipRevenue, color: '#6C4BFF' },
+        { name: 'Projects', value: projectRevenue, color: '#00D1FF' },
+        { name: 'Products', value: productRevenue, color: '#FF6BCE' },
+    ];
+
+    const StatCard = ({ title, value, icon: Icon, color, trend }) => (
+        <div className="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm hover:shadow-md transition-all">
+            <div className="flex items-center justify-between mb-6">
+                <div className={`p-4 rounded-2xl ${color} bg-opacity-10 shadow-sm`}>
+                    <Icon className={`w-7 h-7 ${color}`} />
+                </div>
+                {trend && (
+                    <div className="flex items-center gap-1 text-emerald-500 font-bold bg-emerald-50 px-3 py-1 rounded-full text-xs">
+                        <ArrowUpRight className="w-3 h-3" />
+                        {trend}
+                    </div>
+                )}
+            </div>
+            <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">{title}</p>
+            <h3 className="text-4xl font-black text-gray-800 tracking-tighter">₹{value.toLocaleString('en-IN')}</h3>
+        </div>
+    );
+
+    return (
+        <div className="space-y-8 max-w-[1600px] mx-auto pb-12">
+            <div className="flex justify-between items-end">
+                <div>
+                    <h1 className="text-4xl font-black text-gray-800 tracking-tighter flex items-center gap-3">
+                        <BookOpen className="w-10 h-10 text-brand-purple" />
+                        Treasury Ledger
+                    </h1>
+                    <p className="text-gray-500 mt-2 font-medium">Real-time consolidated capital intelligence across all business domains.</p>
+                </div>
+                <div className="flex gap-4">
+                    <button className="px-6 py-4 bg-white border border-gray-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-gray-500 hover:bg-gray-50 transition-all flex items-center gap-2 shadow-sm">
+                        <Calendar className="w-4 h-4" />
+                        YTD Review
+                    </button>
+                    <button className="px-6 py-4 bg-gray-800 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-gray-900 transition-all flex items-center gap-2 shadow-lg shadow-gray-200">
+                        <Download className="w-4 h-4" />
+                        Financial Export
+                    </button>
+                </div>
+            </div>
+
+            {/* Core Metrics */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div className="md:col-span-1">
+                    <StatCard
+                        title="Aggregate Yield"
+                        value={totalRevenue}
+                        icon={Activity}
+                        color="text-brand-purple"
+                        trend="+12.5%"
+                    />
+                </div>
+                <StatCard
+                    title="Training Feed"
+                    value={internshipRevenue}
+                    icon={TrendingUp}
+                    color="text-brand-purple"
+                />
+                <StatCard
+                    title="Dev Pipeline"
+                    value={projectRevenue}
+                    icon={TrendingUp}
+                    color="text-blue-500"
+                />
+                <StatCard
+                    title="Asset Sales"
+                    value={productRevenue}
+                    icon={TrendingUp}
+                    color="text-brand-pink"
+                />
+            </div>
+
+            {/* Visual Intelligence */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-1 bg-white border border-gray-100 rounded-[40px] p-10 shadow-sm relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 p-10 opacity-5 group-hover:scale-110 transition-transform duration-700">
+                        <PieIcon className="w-40 h-40 text-brand-purple" />
+                    </div>
+                    <h3 className="text-sm font-black text-gray-800 uppercase tracking-widest mb-10 flex items-center gap-2">
+                        <div className="w-2 h-2 bg-brand-purple rounded-full animate-pulse" />
+                        Domain Allocation
+                    </h3>
+                    <div className="h-[320px]">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <PieChart>
+                                <Pie
+                                    data={revenueByType}
+                                    cx="50%"
+                                    cy="50%"
+                                    innerRadius={70}
+                                    outerRadius={110}
+                                    paddingAngle={8}
+                                    dataKey="value"
+                                >
+                                    {revenueByType.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={entry.color} strokeWidth={0} />
+                                    ))}
+                                </Pie>
+                                <Tooltip
+                                    contentStyle={{ borderRadius: '20px', border: 'none', boxShadow: '0 10px 40px -10px rgba(0,0,0,0.1)' }}
+                                    formatter={(value) => `₹${value.toLocaleString('en-IN')}`}
+                                />
+                            </PieChart>
+                        </ResponsiveContainer>
+                    </div>
+                    <div className="space-y-4 mt-8">
+                        {revenueByType.map((item) => (
+                            <div key={item.name} className="flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
+                                    <span className="text-xs font-black text-gray-500 uppercase tracking-widest">{item.name}</span>
+                                </div>
+                                <span className="text-sm font-black text-gray-800">
+                                    {totalRevenue > 0 ? ((item.value / totalRevenue) * 100).toFixed(1) : 0}%
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="lg:col-span-2 bg-white border border-gray-100 rounded-[40px] p-10 shadow-sm">
+                    <div className="flex items-center justify-between mb-10">
+                        <h3 className="text-sm font-black text-gray-800 uppercase tracking-widest flex items-center gap-2">
+                            <Activity className="w-4 h-4 text-emerald-500" />
+                            Unified Transaction Feed
+                        </h3>
+                        <span className="text-[10px] font-black text-gray-400 tracking-tighter">DISPLAYING ARCHIVE L10</span>
+                    </div>
+
+                    <div className="overflow-hidden">
+                        <div className="space-y-4 max-h-[500px] overflow-y-auto pr-4 scrollbar-hide">
+                            {loading ? (
+                                <div className="flex flex-col items-center justify-center py-20 gap-4">
+                                    <div className="w-12 h-12 border-4 border-brand-purple/20 border-t-brand-purple rounded-full animate-spin"></div>
+                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Hydrating Ledger...</p>
+                                </div>
+                            ) : ledgerData.length === 0 ? (
+                                <div className="flex flex-col items-center justify-center py-20 text-center opacity-40">
+                                    <BookOpen className="w-16 h-16 mb-4" />
+                                    <h3 className="text-xs font-black uppercase tracking-widest">Standby Mode</h3>
+                                    <p className="text-[10px] font-bold mt-1">NO INFLOW SIGNALS DETECTED</p>
+                                </div>
+                            ) : (
+                                ledgerData.map((transaction, idx) => (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: idx * 0.05 }}
+                                        key={transaction.id}
+                                        className="flex items-center justify-between p-6 bg-gray-50/50 rounded-3xl hover:bg-gray-50 transition-all border border-transparent hover:border-gray-100 group"
+                                    >
+                                        <div className="flex items-center gap-4">
+                                            <div className={`p-3 rounded-2xl ${transaction.type === 'Internship Fee' ? 'bg-brand-purple/10 text-brand-purple' : transaction.type === 'Project Milestone' ? 'bg-blue-100 text-blue-600' : 'bg-pink-100 text-pink-600'}`}>
+                                                <TrendingUp className="w-4 h-4" />
+                                            </div>
+                                            <div>
+                                                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">{transaction.type}</p>
+                                                <div className="flex items-center gap-2">
+                                                    <Calendar className="w-3 h-3 text-gray-300" />
+                                                    <span className="text-xs font-bold text-gray-600">
+                                                        {transaction.payment_date ? new Date(transaction.payment_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : '-'}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-xl font-black text-gray-800 tracking-tighter">₹{(transaction.amount || 0).toLocaleString('en-IN')}</p>
+                                            <p className="text-[10px] font-mono font-bold text-brand-purple opacity-40 uppercase">{transaction.transaction_id || 'INTERNAL'}</p>
+                                        </div>
+                                    </motion.div>
+                                ))
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}

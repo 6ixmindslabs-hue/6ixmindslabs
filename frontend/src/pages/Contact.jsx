@@ -17,7 +17,7 @@ export default function Contact() {
   const formRef = useRef();
 
   // API URL
-  const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:3000');
+  const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000');
 
   const handleSubmit = async (e) => {
     e.preventDefault();

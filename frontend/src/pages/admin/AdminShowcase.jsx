@@ -20,7 +20,7 @@ export default function AdminShowcase() {
     });
     const [imageFile, setImageFile] = useState(null);
 
-    const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:3000');
+    const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000');
     const CATEGORIES = [
         'Internship & Training',
         'Certificates & Achievements',

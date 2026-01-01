@@ -78,7 +78,7 @@ export default function About() {
   useEffect(() => {
     const fetchTeam = async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:3000');
+        const apiUrl = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000');
         const response = await fetch(`${apiUrl}/api/team`);
         const data = await response.json();
 

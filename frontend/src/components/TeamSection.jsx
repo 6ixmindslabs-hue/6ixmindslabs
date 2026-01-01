@@ -8,7 +8,7 @@ export default function TeamSection() {
         const fetchTeamData = async () => {
             try {
                 // Determine API URL (using localhost for dev, should be env var in prod)
-                const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+                const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
                 const response = await fetch(`${apiUrl}/api/team`);
                 const data = await response.json();

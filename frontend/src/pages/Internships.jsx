@@ -13,7 +13,7 @@ export default function Internships() {
   const [expandedFAQ, setExpandedFAQ] = useState(null);
   const [selectedDuration, setSelectedDuration] = useState('2Weeks');
 
-  const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:3000');
+  const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000');
 
   useEffect(() => {
     fetchInternships();

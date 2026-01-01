@@ -27,7 +27,7 @@ export default function AdminCertificates() {
     const [certificateFile, setCertificateFile] = useState(null);
 
     const itemsPerPage = 10;
-    const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:3000');
+    const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000');
 
     useEffect(() => {
         fetchCertificates();
