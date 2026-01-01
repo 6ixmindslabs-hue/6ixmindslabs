@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Plus, Search, Filter, Download, Edit2, Trash2, Users, GraduationCap, X, Loader2, Phone, Hash, CreditCard, BookOpen, Mail, User, School, Calendar, RefreshCcw } from 'lucide-react';
+import { Plus, Search, Filter, Download, Edit2, Trash2, Users, GraduationCap, X, Loader2, Phone, Hash, CreditCard, BookOpen, Mail, User, School, Calendar, RefreshCcw, FileSpreadsheet } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import * as XLSX from 'xlsx';
 
 export default function TrackerTraining() {
     const [interns, setInterns] = useState([]);
@@ -10,6 +11,14 @@ export default function TrackerTraining() {
     const [searchQuery, setSearchQuery] = useState('');
     const [showAddModal, setShowAddModal] = useState(false);
     const [editingId, setEditingId] = useState(null);
+
+    // Filter State
+    const [filters, setFilters] = useState({
+        domain: 'All',
+        status: 'All',
+        fromDate: '',
+        toDate: ''
+    });
 
     // Form State - All fields optional as requested
     const [formData, setFormData] = useState({
@@ -20,6 +29,8 @@ export default function TrackerTraining() {
         college: '',
         domain: 'Web Development',
         batch_name: '',
+        batch_from: '',
+        batch_to: '',
         status: 'Active',
         payment_status: 'Unpaid',
         total_fee: 0,
@@ -57,6 +68,8 @@ export default function TrackerTraining() {
             college: '',
             domain: 'Web Development',
             batch_name: '',
+            batch_from: '',
+            batch_to: '',
             status: 'Active',
             payment_status: 'Unpaid',
             total_fee: 0,
@@ -76,6 +89,8 @@ export default function TrackerTraining() {
             college: intern.college || '',
             domain: intern.domain || 'Web Development',
             batch_name: intern.batch_name || '',
+            batch_from: intern.batch_name?.split(' to ')[0] || '',
+            batch_to: intern.batch_name?.split(' to ')[1] || '',
             status: intern.status || 'Active',
             payment_status: intern.payment_status || 'Unpaid',
             total_fee: intern.total_fee || 0,
@@ -89,15 +104,21 @@ export default function TrackerTraining() {
         e.preventDefault();
         setSubmitting(true);
 
+        const batchName = (formData.batch_from && formData.batch_to)
+            ? `${formData.batch_from} to ${formData.batch_to}`
+            : formData.batch_name;
+
         const dataToSubmit = {
             ...formData,
+            batch_name: batchName,
             full_name: formData.full_name.trim() === '' ? 'Unnamed Intern' : formData.full_name.trim(),
             email: formData.email.trim() === '' ? null : formData.email.trim(),
             phone: formData.phone.trim() === '' ? null : formData.phone.trim(),
             intern_id_custom: formData.intern_id_custom.trim() === '' ? null : formData.intern_id_custom.trim(),
             college: formData.college.trim() === '' ? null : formData.college.trim(),
-            batch_name: formData.batch_name.trim() === '' ? null : formData.batch_name.trim(),
         };
+        delete dataToSubmit.batch_from;
+        delete dataToSubmit.batch_to;
 
         try {
             let result;
@@ -206,14 +227,48 @@ export default function TrackerTraining() {
         }
     };
 
-    const filteredInterns = interns.filter(intern =>
-        intern.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        intern.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        intern.intern_id_custom?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        intern.phone?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        intern.domain?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        intern.batch_name?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredInterns = interns.filter(intern => {
+        const query = searchQuery.toLowerCase();
+        const matchesSearch =
+            (intern.full_name || '').toLowerCase().includes(query) ||
+            (intern.email || '').toLowerCase().includes(query) ||
+            (intern.intern_id_custom || '').toLowerCase().includes(query) ||
+            (intern.phone || '').toLowerCase().includes(query) ||
+            (intern.domain || '').toLowerCase().includes(query) ||
+            (intern.batch_name || '').toLowerCase().includes(query);
+
+        const matchesDomain = filters.domain === 'All' || intern.domain === filters.domain;
+        const matchesStatus = filters.status === 'All' || intern.status === filters.status;
+
+        const recordDate = intern.enrollment_date || intern.created_at?.split('T')[0] || '';
+
+        const inFromDate = !filters.fromDate || (recordDate !== '' && recordDate >= filters.fromDate);
+        const inToDate = !filters.toDate || (recordDate !== '' && recordDate <= filters.toDate);
+
+        return Boolean(matchesSearch && matchesDomain && matchesStatus && inFromDate && inToDate);
+    });
+
+    const exportToExcel = () => {
+        const dataToExport = filteredInterns.map(i => ({
+            'Intern ID': i.intern_id_custom || 'N/A',
+            'Full Name': i.full_name,
+            'Email': i.email || 'N/A',
+            'Phone': i.phone || 'N/A',
+            'Domain': i.domain,
+            'Batch': i.batch_name || 'Individual',
+            'College': i.college || 'N/A',
+            'Status': i.status,
+            'Payment Status': i.payment_status,
+            'Total Fee': i.total_fee,
+            'Paid Fee': i.paid_fee,
+            'Date Created': new Date(i.created_at).toLocaleDateString()
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Interns");
+        XLSX.writeFile(workbook, `6ixminds_training_report_${new Date().toISOString().split('T')[0]}.xlsx`);
+    };
 
     const StatCard = ({ title, value, icon: Icon, color }) => (
         <div className="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all">
@@ -262,7 +317,7 @@ export default function TrackerTraining() {
                 <StatCard title="Total Collected" value={`₹${interns.reduce((s, i) => s + (i.paid_fee || 0), 0).toLocaleString('en-IN')}`} icon={Hash} color="text-blue-500" />
             </div>
 
-            <div className="bg-white border border-gray-100 rounded-[32px] p-6 shadow-sm">
+            <div className="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm space-y-6">
                 <div className="relative group">
                     <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-300 group-focus-within:text-brand-purple transition-colors" />
                     <input
@@ -272,6 +327,72 @@ export default function TrackerTraining() {
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="w-full pl-14 pr-6 py-5 bg-gray-50/50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-purple/10 focus:bg-white transition-all font-bold text-gray-700 placeholder:text-gray-300 placeholder:font-black placeholder:text-[10px] placeholder:tracking-widest"
                     />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-2">From Date</label>
+                        <input
+                            type="date"
+                            value={filters.fromDate}
+                            onChange={(e) => setFilters({ ...filters, fromDate: e.target.value })}
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-purple/20"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-2">To Date</label>
+                        <input
+                            type="date"
+                            value={filters.toDate}
+                            onChange={(e) => setFilters({ ...filters, toDate: e.target.value })}
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-purple/20"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-2">Domain</label>
+                        <select
+                            value={filters.domain}
+                            onChange={(e) => setFilters({ ...filters, domain: e.target.value })}
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-purple/20"
+                        >
+                            <option value="All">All Domains</option>
+                            <option value="Web Development">Web Development</option>
+                            <option value="Embedded and IoT">Embedded and IoT</option>
+                            <option value="PCB Design">PCB Design</option>
+                        </select>
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-2">Status</label>
+                        <select
+                            value={filters.status}
+                            onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-purple/20"
+                        >
+                            <option value="All">All Status</option>
+                            <option value="Active">Active</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Dropped">Dropped</option>
+                        </select>
+                    </div>
+                    <div className="flex items-end gap-2">
+                        <button
+                            onClick={exportToExcel}
+                            className="flex-[3] py-3 bg-emerald-500 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2"
+                        >
+                            <FileSpreadsheet className="w-4 h-4" />
+                            XLSX
+                        </button>
+                        <button
+                            onClick={() => {
+                                setSearchQuery('');
+                                setFilters({ domain: 'All', status: 'All', fromDate: '', toDate: '' });
+                            }}
+                            className="flex-1 py-3 bg-gray-100 text-gray-400 rounded-xl text-[10px] font-bold hover:bg-gray-200 hover:text-gray-600 transition-all uppercase tracking-tighter"
+                        >
+                            Clear
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -439,9 +560,18 @@ export default function TrackerTraining() {
                                         <div className="space-y-3">
                                             <div className="flex items-center gap-2 mb-1">
                                                 <Calendar className="w-4 h-4 text-purple-500" />
-                                                <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest leading-none">Batch Assignment</label>
+                                                <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest leading-none">Batch Duration</label>
                                             </div>
-                                            <input type="text" value={formData.batch_name} onChange={(e) => setFormData({ ...formData, batch_name: e.target.value })} className="w-full px-6 py-4.5 bg-gray-50 border border-transparent rounded-3xl focus:outline-none focus:ring-4 focus:ring-purple-50 transition-all font-black text-gray-800 placeholder:text-gray-200" placeholder="DEC-2025" />
+                                            <div className="grid grid-cols-2 gap-3">
+                                                <div className="space-y-1">
+                                                    <span className="text-[8px] font-bold text-gray-400 uppercase ml-1">From</span>
+                                                    <input type="date" value={formData.batch_from} onChange={(e) => setFormData({ ...formData, batch_from: e.target.value })} className="w-full px-4 py-3 bg-gray-50 border border-transparent rounded-2xl focus:outline-none focus:ring-4 focus:ring-purple-50 transition-all font-bold text-gray-800 text-xs" />
+                                                </div>
+                                                <div className="space-y-1">
+                                                    <span className="text-[8px] font-bold text-gray-400 uppercase ml-1">To</span>
+                                                    <input type="date" value={formData.batch_to} onChange={(e) => setFormData({ ...formData, batch_to: e.target.value })} className="w-full px-4 py-3 bg-gray-50 border border-transparent rounded-2xl focus:outline-none focus:ring-4 focus:ring-purple-50 transition-all font-bold text-gray-800 text-xs" />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

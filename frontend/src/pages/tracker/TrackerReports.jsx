@@ -1,7 +1,16 @@
-import { FileText, Download, Calendar, Filter } from 'lucide-react';
+import { useState } from 'react';
+import { FileText, Download, Calendar, Filter, Search, X } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function TrackerReports() {
-    const reports = [
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filters, setFilters] = useState({
+        type: 'All',
+        fromDate: '',
+        toDate: ''
+    });
+
+    const reportsData = [
         { id: 1, name: 'Monthly Enrollment Report', type: 'Internships', date: '2026-01-01', size: '245 KB' },
         { id: 2, name: 'Revenue Summary Q4 2025', type: 'Finance', date: '2025-12-31', size: '128 KB' },
         { id: 3, name: 'Project Delivery Status', type: 'Projects', date: '2026-01-01', size: '89 KB' },
@@ -9,83 +18,168 @@ export default function TrackerReports() {
         { id: 5, name: 'Client Engagement Analysis', type: 'Clients', date: '2025-12-25', size: '203 KB' },
     ];
 
+    const filteredReports = reportsData.filter(report => {
+        const matchesSearch = report.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            report.type.toLowerCase().includes(searchQuery.toLowerCase());
+
+        const matchesType = filters.type === 'All' || report.type === filters.type;
+
+        const reportDate = report.date;
+        const inFromDate = !filters.fromDate || (reportDate >= filters.fromDate);
+        const inToDate = !filters.toDate || (reportDate <= filters.toDate);
+
+        return Boolean(matchesSearch && matchesType && inFromDate && inToDate);
+    });
+
     return (
-        <div className="space-y-6">
+        <div className="space-y-8 max-w-[1200px] mx-auto pb-12">
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-800 tracking-tight">Reports</h1>
-                    <p className="text-gray-500 mt-1">Generate and download comprehensive reports</p>
+                    <h1 className="text-4xl font-black text-gray-800 tracking-tighter">Report Depository</h1>
+                    <p className="text-gray-500 mt-1 font-medium">Unified archival & generation of operational intelligence</p>
                 </div>
-                <button className="px-4 py-2 bg-gradient-to-r from-brand-purple to-brand-pink text-white rounded-xl text-sm font-bold shadow-lg shadow-brand-purple/30 hover:scale-105 transition-all flex items-center gap-2">
+                <button className="px-6 py-3 bg-gradient-to-r from-brand-purple to-brand-pink text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-brand-purple/20 hover:scale-105 transition-all flex items-center gap-2">
                     <FileText className="w-4 h-4" />
                     Generate New Report
                 </button>
             </div>
 
-            {/* Report Types */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all cursor-pointer group">
-                    <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <FileText className="w-6 h-6 text-brand-purple" />
+            {/* Report Strategy Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm hover:shadow-xl transition-all group">
+                    <div className="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <FileText className="w-7 h-7 text-brand-purple" />
                     </div>
-                    <h3 className="font-bold text-gray-800 mb-2">Internship Report</h3>
-                    <p className="text-sm text-gray-600 mb-4">Enrollment, completion, and performance metrics</p>
-                    <button className="text-brand-purple text-sm font-medium hover:text-brand-pink">Generate →</button>
+                    <h3 className="text-lg font-black text-gray-800 mb-2">Training Pulse</h3>
+                    <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-6">Enrollment & Performance</p>
+                    <button className="w-full py-4 bg-gray-50 text-brand-purple text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-brand-purple hover:text-white transition-all">Generate Strategy →</button>
                 </div>
 
-                <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all cursor-pointer group">
-                    <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <FileText className="w-6 h-6 text-emerald-600" />
+                <div className="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm hover:shadow-xl transition-all group">
+                    <div className="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <FileText className="w-7 h-7 text-emerald-600" />
                     </div>
-                    <h3 className="font-bold text-gray-800 mb-2">Revenue Ledger</h3>
-                    <p className="text-sm text-gray-600 mb-4">Complete financial transactions and balances</p>
-                    <button className="text-emerald-600 text-sm font-medium hover:text-emerald-700">Generate →</button>
+                    <h3 className="text-lg font-black text-gray-800 mb-2">Treasury Ledger</h3>
+                    <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-6">Financial Consolidation</p>
+                    <button className="w-full py-4 bg-gray-50 text-emerald-600 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-emerald-600 hover:text-white transition-all">Generate Strategy →</button>
                 </div>
 
-                <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all cursor-pointer group">
-                    <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <FileText className="w-6 h-6 text-blue-600" />
+                <div className="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm hover:shadow-xl transition-all group">
+                    <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <FileText className="w-7 h-7 text-blue-600" />
                     </div>
-                    <h3 className="font-bold text-gray-800 mb-2">Project Summary</h3>
-                    <p className="text-sm text-gray-600 mb-4">Client projects, timelines, and deliverables</p>
-                    <button className="text-blue-600 text-sm font-medium hover:text-blue-700">Generate →</button>
+                    <h3 className="text-lg font-black text-gray-800 mb-2">Asset Roadmap</h3>
+                    <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-6">Project Life-cycle Review</p>
+                    <button className="w-full py-4 bg-gray-50 text-blue-600 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-blue-600 hover:text-white transition-all">Generate Strategy →</button>
                 </div>
             </div>
 
-            {/* Previous Reports */}
-            <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-                <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-lg font-bold text-gray-800">Recent Reports</h3>
-                    <button className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm hover:bg-gray-100 flex items-center gap-2">
-                        <Filter className="w-4 h-4" />
-                        Filter
-                    </button>
+            {/* Advanced Filtering Bar */}
+            <div className="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm space-y-6">
+                <div className="relative group">
+                    <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-brand-purple transition-colors" />
+                    <input
+                        type="text"
+                        placeholder="Identify report by index or title..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full pl-14 pr-6 py-5 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-purple/10 font-bold text-gray-700"
+                    />
                 </div>
 
-                <div className="space-y-3">
-                    {reports.map((report) => (
-                        <div key={report.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group">
-                            <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-                                    <FileText className="w-5 h-5 text-brand-purple" />
-                                </div>
-                                <div>
-                                    <h4 className="font-medium text-gray-800">{report.name}</h4>
-                                    <div className="flex items-center gap-4 mt-1">
-                                        <span className="text-xs text-gray-500">{report.type}</span>
-                                        <span className="text-xs text-gray-400 flex items-center gap-1">
-                                            <Calendar className="w-3 h-3" />
-                                            {new Date(report.date).toLocaleDateString()}
-                                        </span>
-                                        <span className="text-xs text-gray-400">{report.size}</span>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-2">From Date</label>
+                        <input
+                            type="date"
+                            value={filters.fromDate}
+                            onChange={(e) => setFilters({ ...filters, fromDate: e.target.value })}
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold text-gray-700"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-2">To Date</label>
+                        <input
+                            type="date"
+                            value={filters.toDate}
+                            onChange={(e) => setFilters({ ...filters, toDate: e.target.value })}
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold text-gray-700"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-2">Categorization</label>
+                        <select
+                            value={filters.type}
+                            onChange={(e) => setFilters({ ...filters, type: e.target.value })}
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold text-gray-700"
+                        >
+                            <option value="All">All Categories</option>
+                            <option>Internships</option>
+                            <option>Finance</option>
+                            <option>Projects</option>
+                            <option>Operations</option>
+                            <option>Clients</option>
+                        </select>
+                    </div>
+                    <div className="flex items-end">
+                        <button
+                            onClick={() => {
+                                setSearchQuery('');
+                                setFilters({ type: 'All', fromDate: '', toDate: '' });
+                            }}
+                            className="w-full py-3 bg-gray-100 text-gray-500 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-gray-200 transition-all flex items-center justify-center gap-2"
+                        >
+                            <X className="w-4 h-4" />
+                            Clear Filters
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {/* Archive List */}
+            <div className="bg-white border border-gray-100 rounded-[32px] overflow-hidden shadow-sm">
+                <div className="p-8 border-b border-gray-100 flex items-center justify-between">
+                    <h3 className="text-sm font-black text-gray-800 uppercase tracking-widest">Recent Archival Feed</h3>
+                    <span className="text-[10px] font-black text-brand-purple bg-brand-purple/10 px-3 py-1 rounded-full uppercase tracking-tighter">Filtered: {filteredReports.length} Items</span>
+                </div>
+
+                <div className="divide-y divide-gray-100">
+                    {filteredReports.length === 0 ? (
+                        <div className="p-20 text-center opacity-40">
+                            <FileText className="w-16 h-16 mx-auto mb-4" />
+                            <h4 className="text-[10px] font-black uppercase tracking-[0.2em]">Depository Standby</h4>
+                            <p className="text-[10px] font-bold mt-1">NO MATCHING REPORTS DETECTED</p>
+                        </div>
+                    ) : (
+                        filteredReports.map((report) => (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                key={report.id}
+                                className="flex items-center justify-between p-8 hover:bg-gray-50/50 transition-all group"
+                            >
+                                <div className="flex items-center gap-6">
+                                    <div className="w-14 h-14 bg-white border border-gray-100 rounded-2xl flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+                                        <FileText className="w-6 h-6 text-brand-purple" />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-black text-gray-800 group-hover:text-brand-purple transition-colors">{report.name}</h4>
+                                        <div className="flex items-center gap-6 mt-2">
+                                            <span className="text-[9px] font-black text-brand-purple bg-brand-purple/5 px-3 py-1 rounded-lg uppercase tracking-widest">{report.type}</span>
+                                            <span className="text-[10px] font-bold text-gray-400 flex items-center gap-2">
+                                                <Calendar className="w-4 h-4" />
+                                                {new Date(report.date).toLocaleDateString()}
+                                            </span>
+                                            <span className="text-[10px] font-black text-gray-400 tracking-tighter">{report.size}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <button className="p-2 text-gray-400 hover:text-brand-purple transition-colors opacity-0 group-hover:opacity-100">
-                                <Download className="w-5 h-5" />
-                            </button>
-                        </div>
-                    ))}
+                                <button className="p-4 bg-gray-50 text-gray-400 hover:bg-brand-purple hover:text-white rounded-2xl transition-all shadow-sm">
+                                    <Download className="w-5 h-5" />
+                                </button>
+                            </motion.div>
+                        ))
+                    )}
                 </div>
             </div>
         </div>

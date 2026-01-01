@@ -26,7 +26,6 @@ export default function TrackerSidebar() {
         { section: 'OPERATIONS' },
         { name: 'Training', path: '/tracker/training', icon: GraduationCap },
         { name: 'Clients', path: '/tracker/clients', icon: Building2 },
-        { name: 'Projects', path: '/tracker/projects', icon: Briefcase },
         { name: 'Products', path: '/tracker/products', icon: Package },
 
         { section: 'FINANCE' },

@@ -5,7 +5,6 @@ import TrackerLayout from './TrackerLayout';
 import TrackerDashboard from './TrackerDashboard';
 import TrackerTraining from './TrackerTraining';
 import TrackerClients from './TrackerClients';
-import TrackerProjects from './TrackerProjects';
 import TrackerProducts from './TrackerProducts';
 import TrackerInternPayments from './TrackerInternPayments';
 import TrackerClientPayments from './TrackerClientPayments';
@@ -39,7 +38,6 @@ export default function TrackerRoutes() {
                     <Route path="dashboard" element={<TrackerDashboard />} />
                     <Route path="training" element={<TrackerTraining />} />
                     <Route path="clients" element={<TrackerClients />} />
-                    <Route path="projects" element={<TrackerProjects />} />
                     <Route path="products" element={<TrackerProducts />} />
                     <Route path="payments/interns" element={<TrackerInternPayments />} />
                     <Route path="payments/clients" element={<TrackerClientPayments />} />

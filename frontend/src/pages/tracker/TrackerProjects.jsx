@@ -1,16 +1,25 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Plus, Search, Filter, Briefcase, Calendar, DollarSign, Edit2, Trash2, X, Loader2, RefreshCcw, CreditCard, TrendingUp } from 'lucide-react';
+import { Plus, Search, Filter, Briefcase, Calendar, DollarSign, Edit2, Trash2, X, Loader2, RefreshCcw, CreditCard, TrendingUp, FileSpreadsheet } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import * as XLSX from 'xlsx';
 
 export default function TrackerProjects() {
     const [projects, setProjects] = useState([]);
     const [clients, setClients] = useState([]);
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
+    const [editingId, setEditingId] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [showAddModal, setShowAddModal] = useState(false);
-    const [editingId, setEditingId] = useState(null);
+
+    // Filter State
+    const [filters, setFilters] = useState({
+        domain: 'All',
+        status: 'All',
+        fromDate: '',
+        toDate: ''
+    });
 
     // Form State
     const [formData, setFormData] = useState({
@@ -233,11 +242,39 @@ export default function TrackerProjects() {
         }
     };
 
-    const filteredProjects = projects.filter(project =>
-        project.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        project.domain?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        project.clients?.company_name?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredProjects = projects.filter(project => {
+        const query = searchQuery.toLowerCase();
+        const matchesSearch =
+            (project.title || '').toLowerCase().includes(query) ||
+            (project.domain || '').toLowerCase().includes(query) ||
+            (project.clients?.company_name || '').toLowerCase().includes(query);
+
+        const matchesDomain = filters.domain === 'All' || project.domain === filters.domain;
+        const matchesStatus = filters.status === 'All' || project.status === filters.status;
+
+        const recordDate = project.start_date || '';
+        const inFromDate = !filters.fromDate || (recordDate !== '' && recordDate >= filters.fromDate);
+        const inToDate = !filters.toDate || (recordDate !== '' && recordDate <= filters.toDate);
+
+        return Boolean(matchesSearch && matchesDomain && matchesStatus && inFromDate && inToDate);
+    });
+
+    const exportToExcel = () => {
+        const dataToExport = filteredProjects.map(p => ({
+            'Project Title': p.title,
+            'Client': p.clients?.company_name || 'INTERNAL',
+            'Domain': p.domain,
+            'Value': p.value,
+            'Paid': p.paid_amount,
+            'Status': p.status,
+            'Start Date': p.start_date
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Projects");
+        XLSX.writeFile(workbook, `6ixminds_projects_report_${new Date().toISOString().split('T')[0]}.xlsx`);
+    };
 
     const StatCard = ({ title, value, icon: Icon, color }) => (
         <div className="bg-white border border-gray-100 rounded-[32px] p-6 shadow-sm hover:shadow-md transition-all">
@@ -287,8 +324,7 @@ export default function TrackerProjects() {
                 <StatCard title="Outstanding" value={`₹${projects.reduce((acc, p) => acc + ((p.value || 0) - (p.paid_amount || 0)), 0).toLocaleString('en-IN')}`} icon={DollarSign} color="text-brand-pink" />
             </div>
 
-            {/* Search */}
-            <div className="bg-white border border-gray-100 rounded-[32px] p-6 shadow-sm">
+            <div className="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm space-y-6">
                 <div className="relative group">
                     <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-300 group-focus-within:text-brand-purple transition-colors" />
                     <input
@@ -298,6 +334,72 @@ export default function TrackerProjects() {
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="w-full pl-14 pr-6 py-5 bg-gray-50/50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-purple/10 focus:bg-white transition-all font-bold text-gray-700 placeholder:text-gray-300 placeholder:font-black placeholder:text-[10px] placeholder:tracking-widest"
                     />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-2">From Date</label>
+                        <input
+                            type="date"
+                            value={filters.fromDate}
+                            onChange={(e) => setFilters({ ...filters, fromDate: e.target.value })}
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-purple/20"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-2">To Date</label>
+                        <input
+                            type="date"
+                            value={filters.toDate}
+                            onChange={(e) => setFilters({ ...filters, toDate: e.target.value })}
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-purple/20"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-2">Domain</label>
+                        <select
+                            value={filters.domain}
+                            onChange={(e) => setFilters({ ...filters, domain: e.target.value })}
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-purple/20"
+                        >
+                            <option value="All">All Domains</option>
+                            <option>Web Development</option>
+                            <option>Embedded and IoT</option>
+                            <option>PCB Design</option>
+                            <option>AI Solutions</option>
+                        </select>
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-2">Status</label>
+                        <select
+                            value={filters.status}
+                            onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-purple/20"
+                        >
+                            <option value="All">All Status</option>
+                            <option>In Progress</option>
+                            <option>Delivered</option>
+                            <option>Maintenance</option>
+                        </select>
+                    </div>
+                    <div className="flex items-end gap-2">
+                        <button
+                            onClick={exportToExcel}
+                            className="flex-[3] py-3 bg-emerald-500 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2"
+                        >
+                            <FileSpreadsheet className="w-4 h-4" />
+                            XLSX
+                        </button>
+                        <button
+                            onClick={() => {
+                                setSearchQuery('');
+                                setFilters({ domain: 'All', status: 'All', fromDate: '', toDate: '' });
+                            }}
+                            className="flex-1 py-3 bg-gray-100 text-gray-400 rounded-xl text-[10px] font-bold hover:bg-gray-200 hover:text-gray-600 transition-all uppercase tracking-tighter"
+                        >
+                            Clear
+                        </button>
+                    </div>
                 </div>
             </div>
 

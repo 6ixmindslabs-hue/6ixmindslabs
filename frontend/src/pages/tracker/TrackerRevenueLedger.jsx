@@ -1,12 +1,19 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
-import { BookOpen, TrendingUp, Download, Calendar, DollarSign, PieChart as PieIcon, Activity, ArrowUpRight } from 'lucide-react';
+import { BookOpen, TrendingUp, Download, Calendar, DollarSign, PieChart as PieIcon, Activity, ArrowUpRight, Search, FileSpreadsheet, X } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, AreaChart, Area } from 'recharts';
 import { motion } from 'framer-motion';
+import * as XLSX from 'xlsx';
 
 export default function TrackerRevenueLedger() {
     const [ledgerData, setLedgerData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filters, setFilters] = useState({
+        type: 'All',
+        fromDate: '',
+        toDate: ''
+    });
 
     useEffect(() => {
         fetchLedger();
@@ -26,6 +33,37 @@ export default function TrackerRevenueLedger() {
         } finally {
             setLoading(false);
         }
+    };
+
+    const filteredLedger = ledgerData.filter(p => {
+        const query = searchQuery.toLowerCase();
+        const matchesSearch =
+            (p.type || '').toLowerCase().includes(query) ||
+            (p.transaction_id || '').toLowerCase().includes(query);
+
+        const matchesType = filters.type === 'All' || p.type === filters.type;
+
+        const recordDate = p.payment_date || '';
+        const inFromDate = !filters.fromDate || (recordDate !== '' && recordDate >= filters.fromDate);
+        const inToDate = !filters.toDate || (recordDate !== '' && recordDate <= filters.toDate);
+
+        return Boolean(matchesSearch && matchesType && inFromDate && inToDate);
+    });
+
+    const exportToExcel = () => {
+        const dataToExport = filteredLedger.map(p => ({
+            'Type': p.type,
+            'Amount': p.amount,
+            'Date': p.payment_date,
+            'Reference ID': p.transaction_id || 'INTERNAL',
+            'Method': p.payment_method || 'N/A',
+            'Status': p.status
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Revenue Ledger");
+        XLSX.writeFile(workbook, `6ixminds_revenue_ledger_${new Date().toISOString().split('T')[0]}.xlsx`);
     };
 
     const internshipRevenue = ledgerData.filter(p => p.type === 'Internship Fee').reduce((sum, p) => sum + (p.amount || 0), 0);
@@ -68,12 +106,21 @@ export default function TrackerRevenueLedger() {
                     <p className="text-gray-500 mt-2 font-medium">Real-time consolidated capital intelligence across all business domains.</p>
                 </div>
                 <div className="flex gap-4">
-                    <button className="px-6 py-4 bg-white border border-gray-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-gray-500 hover:bg-gray-50 transition-all flex items-center gap-2 shadow-sm">
-                        <Calendar className="w-4 h-4" />
-                        YTD Review
+                    <button
+                        onClick={() => {
+                            setSearchQuery('');
+                            setFilters({ type: 'All', fromDate: '', toDate: '' });
+                        }}
+                        className="px-6 py-4 bg-white border border-gray-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-gray-500 hover:bg-gray-50 transition-all flex items-center gap-2 shadow-sm"
+                    >
+                        <X className="w-4 h-4" />
+                        Clear Filters
                     </button>
-                    <button className="px-6 py-4 bg-gray-800 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-gray-900 transition-all flex items-center gap-2 shadow-lg shadow-gray-200">
-                        <Download className="w-4 h-4" />
+                    <button
+                        onClick={exportToExcel}
+                        className="px-6 py-4 bg-emerald-500 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-600 transition-all flex items-center gap-2 shadow-lg shadow-emerald-200"
+                    >
+                        <FileSpreadsheet className="w-4 h-4" />
                         Financial Export
                     </button>
                 </div>
@@ -108,6 +155,54 @@ export default function TrackerRevenueLedger() {
                     icon={TrendingUp}
                     color="text-brand-pink"
                 />
+            </div>
+
+            {/* Search & Filter Bar */}
+            <div className="bg-white border border-gray-100 rounded-[32px] p-8 shadow-sm space-y-6">
+                <div className="relative group">
+                    <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-300 group-focus-within:text-brand-purple transition-colors" />
+                    <input
+                        type="text"
+                        placeholder="Search ledger by transaction reference or type..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full pl-14 pr-6 py-5 bg-gray-50/50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-purple/10 focus:bg-white transition-all font-bold text-gray-700 placeholder:text-gray-300 placeholder:font-black placeholder:text-[10px] placeholder:tracking-widest"
+                    />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-2">From Date</label>
+                        <input
+                            type="date"
+                            value={filters.fromDate}
+                            onChange={(e) => setFilters({ ...filters, fromDate: e.target.value })}
+                            className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-xs font-bold text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-purple/20"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-2">To Date</label>
+                        <input
+                            type="date"
+                            value={filters.toDate}
+                            onChange={(e) => setFilters({ ...filters, toDate: e.target.value })}
+                            className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-xs font-bold text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-purple/20"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-2">Revenue Type</label>
+                        <select
+                            value={filters.type}
+                            onChange={(e) => setFilters({ ...filters, type: e.target.value })}
+                            className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-xs font-bold text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-purple/20"
+                        >
+                            <option value="All">All Streams</option>
+                            <option value="Internship Fee">Training Revenue</option>
+                            <option value="Project Milestone">Project Milestone</option>
+                            <option value="Product Sale">Product Sale</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
             {/* Visual Intelligence */}
@@ -174,14 +269,14 @@ export default function TrackerRevenueLedger() {
                                     <div className="w-12 h-12 border-4 border-brand-purple/20 border-t-brand-purple rounded-full animate-spin"></div>
                                     <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Hydrating Ledger...</p>
                                 </div>
-                            ) : ledgerData.length === 0 ? (
+                            ) : filteredLedger.length === 0 ? (
                                 <div className="flex flex-col items-center justify-center py-20 text-center opacity-40">
                                     <BookOpen className="w-16 h-16 mb-4" />
                                     <h3 className="text-xs font-black uppercase tracking-widest">Standby Mode</h3>
                                     <p className="text-[10px] font-bold mt-1">NO INFLOW SIGNALS DETECTED</p>
                                 </div>
                             ) : (
-                                ledgerData.map((transaction, idx) => (
+                                filteredLedger.map((transaction, idx) => (
                                     <motion.div
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
