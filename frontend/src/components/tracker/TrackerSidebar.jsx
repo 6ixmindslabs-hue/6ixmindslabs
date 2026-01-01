@@ -34,10 +34,6 @@ export default function TrackerSidebar() {
         { name: 'Client Payments', path: '/tracker/payments/clients', icon: Wallet },
         { name: 'Revenue Ledger', path: '/tracker/finance/ledger', icon: BookOpen },
 
-        { section: 'INTELLIGENCE' },
-        { name: 'Analytics', path: '/tracker/analytics', icon: BarChart2 },
-        { name: 'Reports', path: '/tracker/reports', icon: FileText },
-
         { section: 'SYSTEM' },
         { name: 'Settings', path: '/tracker/settings', icon: Settings },
     ];
