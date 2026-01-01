@@ -637,122 +637,126 @@ export default function TrackerClients() {
                                                             className="overflow-hidden"
                                                         >
                                                             <div className="p-6">
-                                                                {/* Summary Header */}
-                                                                <div className="flex items-center gap-8 bg-gray-50/80 p-4 rounded-xl mb-6 border border-gray-100">
-                                                                    <div>
-                                                                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wide block mb-1">Total Value</span>
-                                                                        <span className="text-sm font-black text-gray-800">₹{totalValue.toLocaleString('en-IN')}</span>
-                                                                    </div>
-                                                                    <div className="w-px h-8 bg-gray-200"></div>
-                                                                    <div>
-                                                                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wide block mb-1">Received</span>
-                                                                        <span className="text-sm font-black text-emerald-600">₹{totalPaid.toLocaleString('en-IN')}</span>
-                                                                    </div>
-                                                                    <div className="w-px h-8 bg-gray-200"></div>
-                                                                    <div>
-                                                                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wide block mb-1">Outstanding</span>
-                                                                        <span className="text-sm font-black text-red-500">₹{outstanding.toLocaleString('en-IN')}</span>
-                                                                    </div>
-                                                                    <div className="w-px h-8 bg-gray-200 hidden sm:block"></div>
-                                                                    <div className="hidden sm:block">
-                                                                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wide block mb-1">Last Activity</span>
-                                                                        <span className="text-xs font-bold text-gray-600">{lastActivity}</span>
-                                                                    </div>
-                                                                </div>
-
-                                                                {/* Projects Table */}
-                                                                <div className="border border-gray-100 rounded-xl overflow-hidden">
-                                                                    <table className="w-full">
-                                                                        <thead className="bg-gray-50 border-b border-gray-100">
+                                                                {/* Projects Table - Single Row Layout */}
+                                                                <div className="border border-gray-200 rounded-lg overflow-x-auto bg-white">
+                                                                    <table className="w-full min-w-max">
+                                                                        <thead className="bg-gray-50/50 border-b border-gray-200">
                                                                             <tr>
-                                                                                <th className="px-6 py-3 text-left text-[10px] font-black text-gray-400 uppercase tracking-wider">Project Name</th>
-                                                                                <th className="px-6 py-3 text-left text-[10px] font-black text-gray-400 uppercase tracking-wider">Domain & Value</th>
-                                                                                <th className="px-6 py-3 text-left text-[10px] font-black text-gray-400 uppercase tracking-wider w-1/3">Progress</th>
-                                                                                <th className="px-6 py-3 text-right text-[10px] font-black text-gray-400 uppercase tracking-wider">Status</th>
-                                                                                <th className="px-6 py-3 text-center text-[10px] font-black text-gray-400 uppercase tracking-wider w-24">Actions</th>
+                                                                                <th className="px-4 py-3 text-left text-[10px] font-bold text-gray-500 uppercase tracking-wider">Project Name</th>
+                                                                                <th className="px-4 py-3 text-left text-[10px] font-bold text-gray-500 uppercase tracking-wider">Project Value</th>
+                                                                                <th className="px-4 py-3 text-left text-[10px] font-bold text-gray-500 uppercase tracking-wider">Payment Status</th>
+                                                                                <th className="px-4 py-3 text-center text-[10px] font-bold text-gray-500 uppercase tracking-wider">Status</th>
+                                                                                <th className="px-4 py-3 text-center text-[10px] font-bold text-gray-500 uppercase tracking-wider">Last Activity</th>
+                                                                                <th className="px-4 py-3 text-center text-[10px] font-bold text-gray-500 uppercase tracking-wider w-20">Actions</th>
                                                                             </tr>
                                                                         </thead>
-                                                                        <tbody className="divide-y divide-gray-50 bg-white">
+                                                                        <tbody className="divide-y divide-gray-100 bg-white">
                                                                             {clientProjects.length === 0 ? (
                                                                                 <tr>
-                                                                                    <td colSpan="5" className="py-8 text-center text-gray-400 text-xs font-bold italic">
-                                                                                        No active projects found
+                                                                                    <td colSpan="6" className="py-12 text-center text-gray-400 text-sm font-medium">
+                                                                                        No projects found
                                                                                     </td>
                                                                                 </tr>
                                                                             ) : (
-                                                                                clientProjects.map(project => (
-                                                                                    <tr
-                                                                                        key={project.id}
-                                                                                        onClick={(e) => { e.stopPropagation(); handleOpenProjectModal(client, project); }}
-                                                                                        className="group/row hover:bg-gray-50/50 transition-colors cursor-pointer"
-                                                                                    >
-                                                                                        <td className="px-6 py-4">
-                                                                                            <div className="flex items-center gap-3">
-                                                                                                <div className="p-2 rounded-lg bg-gray-50 text-gray-400 group-hover/row:text-brand-purple group-hover/row:bg-brand-purple/10 transition-colors">
-                                                                                                    <Layout className="w-4 h-4" />
+                                                                                clientProjects.map(project => {
+                                                                                    const paymentPercentage = Math.min(100, ((Number(project.paid_amount) || 0) / (Number(project.value) || 1)) * 100);
+                                                                                    const projectDate = project.start_date ? new Date(project.start_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : 'N/A';
+
+                                                                                    return (
+                                                                                        <tr
+                                                                                            key={project.id}
+                                                                                            onClick={(e) => { e.stopPropagation(); handleOpenProjectModal(client, project); }}
+                                                                                            className="group/row hover:bg-gray-50/40 transition-colors cursor-pointer"
+                                                                                        >
+                                                                                            {/* 1. Project Icon + Name */}
+                                                                                            <td className="px-4 py-3">
+                                                                                                <div className="flex items-center gap-3">
+                                                                                                    <div className="w-8 h-8 rounded-md bg-gray-100 flex items-center justify-center text-gray-500 group-hover/row:bg-brand-purple/10 group-hover/row:text-brand-purple transition-colors flex-shrink-0">
+                                                                                                        <Layout className="w-4 h-4" />
+                                                                                                    </div>
+                                                                                                    <div className="min-w-0">
+                                                                                                        <div className="font-bold text-gray-900 text-sm truncate">{project.title}</div>
+                                                                                                        <div className="text-[10px] font-medium text-gray-400 uppercase tracking-wide">{project.domain}</div>
+                                                                                                    </div>
                                                                                                 </div>
-                                                                                                <span className="font-bold text-gray-800 text-sm">{project.title}</span>
-                                                                                            </div>
-                                                                                        </td>
-                                                                                        <td className="px-6 py-4">
-                                                                                            <div className="text-xs font-bold text-gray-600">
-                                                                                                {project.domain}
-                                                                                            </div>
-                                                                                            <div className="text-[10px] font-bold text-gray-400 mt-0.5">
-                                                                                                ₹{(Number(project.value) || 0).toLocaleString('en-IN')}
-                                                                                            </div>
-                                                                                        </td>
-                                                                                        <td className="px-6 py-4">
-                                                                                            <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
-                                                                                                <div
-                                                                                                    className={`h-full rounded-full ${project.status === 'Delivered' ? 'bg-emerald-500' : 'bg-brand-purple'}`}
-                                                                                                    style={{ width: `${Math.min(100, ((Number(project.paid_amount) || 0) / (Number(project.value) || 1)) * 100)}%` }}
-                                                                                                ></div>
-                                                                                            </div>
-                                                                                            <div className="flex justify-between mt-1.5">
-                                                                                                <span className="text-[10px] font-bold text-gray-400">
-                                                                                                    {Math.round(((Number(project.paid_amount) || 0) / (Number(project.value) || 1)) * 100)}% Paid
+                                                                                            </td>
+
+                                                                                            {/* 2. Project Value */}
+                                                                                            <td className="px-4 py-3">
+                                                                                                <div className="text-sm font-semibold text-gray-900">
+                                                                                                    ₹{(Number(project.value) || 0).toLocaleString('en-IN')}
+                                                                                                </div>
+                                                                                            </td>
+
+                                                                                            {/* 3. Payment Status */}
+                                                                                            <td className="px-4 py-3">
+                                                                                                <div className="flex items-center gap-3">
+                                                                                                    <div className="flex-1 min-w-[120px]">
+                                                                                                        <div className="flex items-center gap-2 mb-1">
+                                                                                                            <span className={`text-[10px] font-bold ${paymentPercentage === 100 ? 'text-emerald-600' : 'text-gray-600'}`}>
+                                                                                                                {Math.round(paymentPercentage)}% Paid
+                                                                                                            </span>
+                                                                                                        </div>
+                                                                                                        <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                                                                                                            <div
+                                                                                                                className={`h-full rounded-full transition-all ${paymentPercentage === 100 ? 'bg-emerald-500' : 'bg-brand-purple'}`}
+                                                                                                                style={{ width: `${paymentPercentage}%` }}
+                                                                                                            ></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div className="text-xs font-semibold text-gray-600 whitespace-nowrap">
+                                                                                                        ₹{(Number(project.paid_amount) || 0).toLocaleString('en-IN')}
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </td>
+
+                                                                                            {/* 4. Overall Status */}
+                                                                                            <td className="px-4 py-3 text-center">
+                                                                                                <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide
+                                                                                                    ${project.status === 'Delivered' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
+                                                                                                        project.status === 'In Progress' ? 'bg-amber-50 text-amber-700 border border-amber-200' :
+                                                                                                            'bg-gray-100 text-gray-600 border border-gray-200'}`}>
+                                                                                                    {project.status}
                                                                                                 </span>
-                                                                                                <span className="text-[10px] font-bold text-gray-400">
-                                                                                                    ₹{(Number(project.paid_amount) || 0).toLocaleString('en-IN')}
+                                                                                            </td>
+
+                                                                                            {/* 5. Last Activity */}
+                                                                                            <td className="px-4 py-3 text-center">
+                                                                                                <span className="text-xs font-medium text-gray-600">
+                                                                                                    {projectDate}
                                                                                                 </span>
-                                                                                            </div>
-                                                                                        </td>
-                                                                                        <td className="px-6 py-4 text-right">
-                                                                                            <span className={`text-[10px] font-black uppercase tracking-wide
-                                                                                                ${project.status === 'Delivered' ? 'text-emerald-600' :
-                                                                                                    project.status === 'In Progress' ? 'text-amber-500' : 'text-gray-400'}`}>
-                                                                                                {project.status}
-                                                                                            </span>
-                                                                                        </td>
-                                                                                        <td className="px-6 py-4 text-center">
-                                                                                            <div className="flex items-center justify-center gap-2 relative z-20">
-                                                                                                <button
-                                                                                                    onClick={(e) => {
-                                                                                                        e.preventDefault();
-                                                                                                        e.stopPropagation();
-                                                                                                        handleOpenProjectModal(client, project);
-                                                                                                    }}
-                                                                                                    className="p-1.5 text-gray-400 hover:text-brand-purple hover:bg-brand-purple/10 rounded-lg transition-colors"
-                                                                                                    title="Edit Project"
-                                                                                                >
-                                                                                                    <Edit2 className="w-3.5 h-3.5" />
-                                                                                                </button>
-                                                                                                <button
-                                                                                                    onClick={(e) => {
-                                                                                                        e.preventDefault();
-                                                                                                        e.stopPropagation();
-                                                                                                        handleDeleteProject(project.id);
-                                                                                                    }}
-                                                                                                    className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                                                                                                    title="Delete Project"
-                                                                                                >
-                                                                                                    <Trash2 className="w-3.5 h-3.5" />
-                                                                                                </button>
-                                                                                            </div>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                ))
+                                                                                            </td>
+
+                                                                                            {/* 6. Actions */}
+                                                                                            <td className="px-4 py-3 text-center">
+                                                                                                <div className="flex items-center justify-center gap-1.5 relative z-20">
+                                                                                                    <button
+                                                                                                        onClick={(e) => {
+                                                                                                            e.preventDefault();
+                                                                                                            e.stopPropagation();
+                                                                                                            handleOpenProjectModal(client, project);
+                                                                                                        }}
+                                                                                                        className="p-1.5 text-gray-400 hover:text-brand-purple hover:bg-brand-purple/10 rounded transition-colors"
+                                                                                                        title="Edit Project"
+                                                                                                    >
+                                                                                                        <Edit2 className="w-4 h-4" />
+                                                                                                    </button>
+                                                                                                    <button
+                                                                                                        onClick={(e) => {
+                                                                                                            e.preventDefault();
+                                                                                                            e.stopPropagation();
+                                                                                                            handleDeleteProject(project.id);
+                                                                                                        }}
+                                                                                                        className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors"
+                                                                                                        title="Delete Project"
+                                                                                                    >
+                                                                                                        <Trash2 className="w-4 h-4" />
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    );
+                                                                                })
                                                                             )}
                                                                         </tbody>
                                                                     </table>
