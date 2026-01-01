@@ -153,7 +153,7 @@ export default function TrackerProjects() {
                             client_id: clientId,
                             project_id: projectId,
                             amount: dataToSubmit.paid_amount,
-                            payment_date: new Date().toISOString().split('T')[0],
+                            payment_date: dataToSubmit.start_date || new Date().toISOString().split('T')[0],
                             payment_method: 'Bank Transfer',
                             transaction_id: transactionId,
                             status: 'Completed',
@@ -181,26 +181,31 @@ export default function TrackerProjects() {
             for (const project of projects) {
                 if (project.paid_amount > 0 && project.client_id) {
                     const transactionId = `PROJECT_INIT_${project.id}`;
-                    const { data: existing } = await supabase
+                    // ROBUST SEARCH: Find ANY existing record linked to this project
+                    const { data: existingRecords } = await supabase
                         .from('payments')
                         .select('id')
                         .eq('project_id', project.id)
-                        .eq('transaction_id', transactionId)
-                        .single();
+                        .limit(1);
+
+                    const existing = existingRecords?.[0];
 
                     if (!existing) {
                         await supabase.from('payments').insert([{
                             client_id: project.client_id,
                             project_id: project.id,
                             amount: project.paid_amount,
-                            payment_date: new Date().toISOString().split('T')[0],
+                            payment_date: project.start_date || new Date().toISOString().split('T')[0],
                             payment_method: 'Bank Transfer',
                             transaction_id: transactionId,
                             status: 'Completed',
                             type: 'Project Milestone'
                         }]);
                     } else {
-                        await supabase.from('payments').update({ amount: project.paid_amount }).eq('id', existing.id);
+                        await supabase.from('payments').update({
+                            amount: project.paid_amount,
+                            payment_date: project.start_date || new Date().toISOString().split('T')[0]
+                        }).eq('id', existing.id);
                     }
                 }
             }

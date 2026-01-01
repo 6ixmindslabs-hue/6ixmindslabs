@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Plus, Search, Filter, Wallet, Calendar, FileText, X, Loader2, CreditCard, Trash2 } from 'lucide-react';
+import { Plus, Search, Filter, Wallet, Calendar, FileText, X, Loader2, CreditCard, Trash2, Edit2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function TrackerClientPayments() {
@@ -11,6 +11,7 @@ export default function TrackerClientPayments() {
     const [submitting, setSubmitting] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [showAddModal, setShowAddModal] = useState(false);
+    const [editingId, setEditingId] = useState(null);
 
     // Form State
     const [formData, setFormData] = useState({
@@ -83,9 +84,19 @@ export default function TrackerClientPayments() {
         };
 
         try {
-            // 1. Record the payment in Unified Ledger
-            const { error: paymentError } = await supabase.from('payments').insert([dataToSubmit]);
-            if (paymentError) throw paymentError;
+            if (editingId) {
+                // 1. Update existing payment
+                const { error: paymentError } = await supabase
+                    .from('payments')
+                    .update(dataToSubmit)
+                    .eq('id', editingId);
+
+                if (paymentError) throw paymentError;
+            } else {
+                // 1. Record new payment
+                const { error: paymentError } = await supabase.from('payments').insert([dataToSubmit]);
+                if (paymentError) throw paymentError;
+            }
 
             // 2. Reflective Sync: Update project's paid_amount
             if (formData.project_id) {
@@ -93,13 +104,35 @@ export default function TrackerClientPayments() {
             }
 
             setShowAddModal(false);
+            setEditingId(null);
             resetForm();
             fetchPayments();
         } catch (error) {
-            alert('Error recording payment: ' + error.message);
+            alert('Error saving record: ' + error.message);
         } finally {
             setSubmitting(false);
         }
+    };
+
+    const handleOpenEdit = (payment) => {
+        setEditingId(payment.id);
+        setFormData({
+            client_id: payment.client_id,
+            project_id: payment.project_id,
+            amount: payment.amount,
+            payment_date: payment.payment_date,
+            payment_method: payment.payment_method,
+            invoice_id: payment.invoice_id,
+            status: payment.status,
+            type: payment.type
+        });
+        setShowAddModal(true);
+    };
+
+    const handleOpenAdd = () => {
+        setEditingId(null);
+        resetForm();
+        setShowAddModal(true);
     };
 
     const handleDeletePayment = async (payment) => {
@@ -183,7 +216,7 @@ export default function TrackerClientPayments() {
                     <p className="text-gray-500 mt-1">Unified client capital flow & milestone tracking</p>
                 </div>
                 <button
-                    onClick={() => setShowAddModal(true)}
+                    onClick={handleOpenAdd}
                     className="px-4 py-2 bg-gradient-to-r from-blue-600 to-emerald-600 text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-500/30 hover:scale-105 transition-all flex items-center gap-2"
                 >
                     <Plus className="w-4 h-4" />
@@ -263,12 +296,20 @@ export default function TrackerClientPayments() {
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 text-right">
-                                            <button
-                                                onClick={() => handleDeletePayment(payment)}
-                                                className="p-2 text-gray-300 hover:text-red-500 transition-colors"
-                                            >
-                                                <Trash2 className="w-4 h-4" />
-                                            </button>
+                                            <div className="flex justify-end gap-2">
+                                                <button
+                                                    onClick={() => handleOpenEdit(payment)}
+                                                    className="p-2 text-gray-300 hover:text-blue-600 transition-colors"
+                                                >
+                                                    <Edit2 className="w-4 h-4" />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDeletePayment(payment)}
+                                                    className="p-2 text-gray-300 hover:text-red-500 transition-colors"
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))
@@ -290,8 +331,8 @@ export default function TrackerClientPayments() {
                         >
                             <div className="p-10 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-blue-50 to-emerald-50">
                                 <div>
-                                    <h2 className="text-2xl font-black text-gray-800 tracking-tight">Deploy Capital Entry</h2>
-                                    <p className="text-[10px] font-bold text-blue-600 uppercase tracking-widest mt-1">Syncing with Operations Matrix</p>
+                                    <h2 className="text-2xl font-black text-gray-800 tracking-tight">{editingId ? 'Modify Capital Entry' : 'Deploy Capital Entry'}</h2>
+                                    <p className="text-[10px] font-bold text-blue-600 uppercase tracking-widest mt-1">{editingId ? 'Updating financial matrix' : 'Syncing with Operations Matrix'}</p>
                                 </div>
                                 <button onClick={() => setShowAddModal(false)} className="p-3 hover:bg-white rounded-2xl transition-all shadow-sm">
                                     <X className="w-5 h-5 text-gray-400" />
@@ -388,8 +429,8 @@ export default function TrackerClientPayments() {
                                         disabled={submitting}
                                         className="flex-[2] px-8 py-5 bg-gradient-to-r from-blue-700 to-emerald-600 text-white rounded-[24px] text-xs font-black uppercase tracking-widest shadow-xl shadow-blue-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3"
                                     >
-                                        {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <CreditCard className="w-5 h-5" />}
-                                        {submitting ? 'SYNCING...' : 'COMMIT ENTRY'}
+                                        {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : editingId ? <Edit2 className="w-5 h-5" /> : <CreditCard className="w-5 h-5" />}
+                                        {submitting ? 'SYNCING...' : editingId ? 'UPDATE ENTRY' : 'COMMIT ENTRY'}
                                     </button>
                                 </div>
                             </form>

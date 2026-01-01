@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Plus, Search, Filter, CreditCard, Calendar, CheckCircle, XCircle, X, Loader2, Trash2 } from 'lucide-react';
+import { Plus, Search, Filter, CreditCard, Calendar, CheckCircle, XCircle, X, Loader2, Trash2, Edit2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function TrackerInternPayments() {
@@ -10,6 +10,7 @@ export default function TrackerInternPayments() {
     const [submitting, setSubmitting] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [showAddModal, setShowAddModal] = useState(false);
+    const [editingId, setEditingId] = useState(null);
 
     // Form State
     const [formData, setFormData] = useState({
@@ -77,33 +78,67 @@ export default function TrackerInternPayments() {
         };
 
         try {
-            // 1. Record the payment
-            const { data: paymentData, error: paymentError } = await supabase
-                .from('payments')
-                .insert([dataToSubmit])
-                .select();
+            if (editingId) {
+                // 1. Update existing payment
+                const { error: paymentError } = await supabase
+                    .from('payments')
+                    .update(dataToSubmit)
+                    .eq('id', editingId);
 
-            if (paymentError) throw paymentError;
+                if (paymentError) throw paymentError;
+            } else {
+                // 1. Record new payment
+                const { error: paymentError } = await supabase
+                    .from('payments')
+                    .insert([dataToSubmit]);
+
+                if (paymentError) throw paymentError;
+            }
 
             // 2. Reflective Intelligence: Update intern stats
             await syncInternStats(formData.intern_id);
 
             setShowAddModal(false);
-            setFormData({
-                intern_id: interns[0]?.id || '',
-                amount: 0,
-                payment_date: new Date().toISOString().split('T')[0],
-                payment_method: 'UPI',
-                transaction_id: '',
-                status: 'Completed',
-                type: 'Internship Fee'
-            });
+            setEditingId(null);
+            resetForm();
             fetchPayments();
         } catch (error) {
-            alert('Error recording payment: ' + error.message);
+            alert('Error saving record: ' + error.message);
         } finally {
             setSubmitting(false);
         }
+    };
+
+    const resetForm = () => {
+        setFormData({
+            intern_id: interns[0]?.id || '',
+            amount: 0,
+            payment_date: new Date().toISOString().split('T')[0],
+            payment_method: 'UPI',
+            transaction_id: '',
+            status: 'Completed',
+            type: 'Internship Fee'
+        });
+    };
+
+    const handleOpenEdit = (payment) => {
+        setEditingId(payment.id);
+        setFormData({
+            intern_id: payment.intern_id,
+            amount: payment.amount,
+            payment_date: payment.payment_date,
+            payment_method: payment.payment_method,
+            transaction_id: payment.transaction_id,
+            status: payment.status,
+            type: payment.type
+        });
+        setShowAddModal(true);
+    };
+
+    const handleOpenAdd = () => {
+        setEditingId(null);
+        resetForm();
+        setShowAddModal(true);
     };
 
     const handleDeletePayment = async (payment) => {
@@ -192,7 +227,7 @@ export default function TrackerInternPayments() {
                     <p className="text-gray-500 mt-1">Unified ledger syncing training & revenue states</p>
                 </div>
                 <button
-                    onClick={() => setShowAddModal(true)}
+                    onClick={handleOpenAdd}
                     className="px-4 py-2 bg-gradient-to-r from-brand-purple to-brand-pink text-white rounded-xl text-sm font-bold shadow-lg shadow-brand-purple/30 hover:scale-105 transition-all flex items-center gap-2"
                 >
                     <Plus className="w-4 h-4" />
@@ -270,12 +305,20 @@ export default function TrackerInternPayments() {
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 text-right">
-                                            <button
-                                                onClick={() => handleDeletePayment(payment)}
-                                                className="p-2 text-gray-300 hover:text-red-500 transition-colors"
-                                            >
-                                                <Trash2 className="w-4 h-4" />
-                                            </button>
+                                            <div className="flex justify-end gap-2">
+                                                <button
+                                                    onClick={() => handleOpenEdit(payment)}
+                                                    className="p-2 text-gray-300 hover:text-brand-purple transition-colors"
+                                                >
+                                                    <Edit2 className="w-4 h-4" />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDeletePayment(payment)}
+                                                    className="p-2 text-gray-300 hover:text-red-500 transition-colors"
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))
@@ -297,8 +340,8 @@ export default function TrackerInternPayments() {
                         >
                             <div className="p-10 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-emerald-50 to-blue-50">
                                 <div>
-                                    <h2 className="text-2xl font-black text-gray-800 tracking-tight">Record Financial Pulse</h2>
-                                    <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mt-1">Syncing with Training Roster</p>
+                                    <h2 className="text-2xl font-black text-gray-800 tracking-tight">{editingId ? 'Modify Ledger Entry' : 'Record Financial Pulse'}</h2>
+                                    <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mt-1">{editingId ? 'Updating training states' : 'Syncing with Training Roster'}</p>
                                 </div>
                                 <button onClick={() => setShowAddModal(false)} className="p-3 hover:bg-white rounded-2xl transition-all shadow-sm">
                                     <X className="w-5 h-5 text-gray-400" />
@@ -381,8 +424,8 @@ export default function TrackerInternPayments() {
                                         disabled={submitting}
                                         className="flex-[2] px-8 py-5 bg-gradient-to-r from-emerald-500 to-blue-600 text-white rounded-[24px] text-xs font-black uppercase tracking-widest shadow-xl shadow-emerald-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3"
                                     >
-                                        {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <CreditCard className="w-5 h-5" />}
-                                        {submitting ? 'SYNCING...' : 'COMMIT TRANSACTION'}
+                                        {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : editingId ? <Edit2 className="w-5 h-5" /> : <CreditCard className="w-5 h-5" />}
+                                        {submitting ? 'SYNCING...' : editingId ? 'UPDATE TRANSACTION' : 'COMMIT TRANSACTION'}
                                     </button>
                                 </div>
                             </form>
