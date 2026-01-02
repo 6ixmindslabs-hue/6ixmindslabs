@@ -18,28 +18,70 @@ const upload = multerUpload.fields([
 /**
  * Generate a unique Certificate ID
  * Format: 6ML-IN-YYYY-XXXXX
+ * 
+ * Logic:
+ * 1. Fetch latest certificate by Primary Key (id) to ensure correct latest record.
+ * 2. Extract numeric part from 'certificate_number' or 'certificate_id'.
+ * 3. Increment and Pad to 5 digits (e.g. 9 -> 00009, 10 -> 00010).
  */
 async function generateCertificateId() {
     const year = new Date().getFullYear();
     const prefix = `6ML-IN-${year}-`;
 
-    // Get the count of certificates for the current year
-    const { data, error, count } = await supabase
-        .from('certificates')
-        .select('certificate_id', { count: 'exact' })
-        .like('certificate_id', `${prefix}%`);
+    try {
+        // STEP 1: Get the last certificate from the database
+        // Order by 'id' (PK) DESC to get the absolutely latest entry
+        const { data, error } = await supabase
+            .from('certificates')
+            .select('certificate_id, certificate_number')
+            .order('id', { ascending: false })
+            .limit(1);
 
-    if (error) {
-        console.error('Error fetching certificate count:', error);
-        // Fallback to a random component if DB check fails
-        const randomNum = Math.floor(10000 + Math.random() * 90000);
-        return `${prefix}${randomNum}`;
+        if (error) {
+            console.error('Error fetching last certificate:', error);
+            throw new Error('Failed to generate certificate ID');
+        }
+
+        // STEP 2: Determine the next certificate number
+        let lastNum = 0;
+
+        if (data && data.length > 0) {
+            const lastCert = data[0];
+
+            // Priority: Use certificate_number column if available
+            if (lastCert.certificate_number) {
+                lastNum = parseInt(lastCert.certificate_number, 10); // "00009" -> 9
+            }
+            // Fallback: Extract from certificate_id string
+            else if (lastCert.certificate_id) {
+                const parts = lastCert.certificate_id.split('-'); // ["6ML", "IN", "2025", "00009"]
+                const numericPart = parts[parts.length - 1]; // "00009"
+                lastNum = parseInt(numericPart, 10);
+            }
+        }
+
+        if (isNaN(lastNum)) lastNum = 0;
+
+        const nextNum = lastNum + 1;
+
+        // STEP 3: Format the certificate number with zero-padding (Length 5)
+        // 1 -> 00001, 9 -> 00009, 10 -> 00010
+        const paddedNum = String(nextNum).padStart(5, '0');
+        const certificateId = `${prefix}${paddedNum}`;
+
+        console.log(`Generated Certificate ID: ${certificateId} (Number: ${paddedNum})`);
+
+        return {
+            certificateId,
+            certificateNumber: paddedNum
+        };
+
+    } catch (error) {
+        console.error('Certificate ID Generation Error:', error);
+        throw new Error('Unable to generate certificate ID. Please try again.');
     }
-
-    const nextNum = (count || 0) + 1;
-    const paddedNum = String(nextNum).padStart(5, '0');
-    return `${prefix}${paddedNum}`;
 }
+
 
 /**
  * Upload file to Supabase Storage
@@ -136,7 +178,7 @@ router.post('/', protect, authorize('admin', 'super-admin'), upload, async (req,
         }
 
         // 1. Generate Backend-only Certificate ID
-        const certificateId = await generateCertificateId();
+        const { certificateId, certificateNumber } = await generateCertificateId();
 
         let profilePhotoUrl = '';
         let certificateFileUrl = '';
@@ -158,6 +200,7 @@ router.post('/', protect, authorize('admin', 'super-admin'), upload, async (req,
             internship_title: internshipTitle,
             issue_date: issueDate,
             certificate_id: certificateId,
+            certificate_number: certificateNumber, // Explicitly storing the number string
             profile_photo_url: profilePhotoUrl,
             certificate_file_url: certificateFileUrl,
             internship_duration: internshipDuration,
