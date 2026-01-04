@@ -27,7 +27,6 @@ import AdminPages from './pages/admin/AdminPages';
 import AdminSettings from './pages/admin/AdminSettings';
 import AdminMessages from './pages/admin/AdminMessages';
 import AdminComingSoon from './components/admin/AdminComingSoon';
-import TrackerRoutes from './pages/tracker/TrackerRoutes';
 
 export default function App() {
   return (
@@ -35,9 +34,6 @@ export default function App() {
       <AuthProvider>
         <ScrollToTop />
         <Routes>
-          {/* Tracker Internal Portal */}
-          <Route path="/tracker/*" element={<TrackerRoutes />} />
-
           {/* Public Routes */}
           <Route path="/" element={
             <div className="flex flex-col min-h-screen">
@@ -138,8 +134,8 @@ export default function App() {
             <Route path="logs" element={<AdminComingSoon title="Audit Logs" icon="📋" description="View admin activity and system logs" />} />
             <Route path="settings" element={<AdminSettings />} />
           </Route>
-        </Routes>
-      </AuthProvider>
-    </Router>
+        </Routes >
+      </AuthProvider >
+    </Router >
   );
 }
