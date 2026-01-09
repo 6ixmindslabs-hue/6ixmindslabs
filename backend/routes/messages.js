@@ -7,12 +7,26 @@ const { protect, authorize } = require('../middleware/auth');
 // @desc    Submit a new contact message (Public)
 router.post('/', async (req, res) => {
     try {
-        const { name, email, subject, message } = req.body;
-        const { data, error } = await supabase
+        const { name, email, phone, subject, message } = req.body;
+
+        // Attempt to insert with phone number
+        let { data, error } = await supabase
             .from('messages')
-            .insert([{ name, email, subject, message, status: 'new' }])
+            .insert([{ name, email, phone, subject, message, status: 'new' }])
             .select()
             .single();
+
+        // If error is related to missing column 'phone', retry without it
+        if (error && error.message && error.message.includes('phone')) {
+            console.warn('Phone column missing in messages table, checking legacy schema...');
+            const retry = await supabase
+                .from('messages')
+                .insert([{ name, email, subject, message, status: 'new' }])
+                .select()
+                .single();
+            data = retry.data;
+            error = retry.error;
+        }
 
         if (error) throw error;
         res.status(201).json({ success: true, message: 'Message sent successfully', data });

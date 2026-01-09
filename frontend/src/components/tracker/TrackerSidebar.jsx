@@ -13,18 +13,52 @@ import {
     FileText,
     Settings,
     LogOut,
-    Hexagon
+    LogOut,
+    Hexagon,
+    MessageSquare
 } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { useTrackerAuth } from '../../contexts/TrackerAuthContext';
 
 export default function TrackerSidebar() {
     const { signOut } = useTrackerAuth();
+    const [unreadCount, setUnreadCount] = useState(0);
+    const navigate = useNavigate();
+
+    const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000');
+
+    useEffect(() => {
+        fetchUnreadCount();
+        // Poll every minute
+        const interval = setInterval(fetchUnreadCount, 60000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const fetchUnreadCount = async () => {
+        try {
+            const token = localStorage.getItem('admin_token');
+            // If we don't have a token, we might not be able to fetch, but let's try or fail silently
+            if (!token) return;
+
+            const response = await fetch(`${API_URL}/api/messages`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+            if (data.success) {
+                const count = data.data.filter(m => m.status === 'new').length;
+                setUnreadCount(count);
+            }
+        } catch (error) {
+            console.error('Error fetching unread messages:', error);
+        }
+    };
 
     const navItems = [
         { name: 'Dashboard', path: '/tracker/dashboard', icon: LayoutDashboard },
 
         { section: 'OPERATIONS' },
         { name: 'Training', path: '/tracker/training', icon: GraduationCap },
+        { name: 'Messages', path: '/tracker/messages', icon: MessageSquare, badge: unreadCount },
         { name: 'Clients', path: '/tracker/clients', icon: Building2 },
         { name: 'Products', path: '/tracker/products', icon: Package },
 
@@ -73,7 +107,12 @@ export default function TrackerSidebar() {
                                         : 'hover:bg-gray-50 text-gray-500 hover:text-gray-900'}
                                 `}>
                                     <Icon className={`w-4 h-4 transition-transform group-hover:scale-110 ${isActive ? 'text-brand-purple' : 'text-gray-400'}`} />
-                                    {item.name}
+                                    <span className="flex-1">{item.name}</span>
+                                    {item.badge > 0 && (
+                                        <span className="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] h-[18px] flex items-center justify-center">
+                                            {item.badge}
+                                        </span>
+                                    )}
                                 </div>
                             )}
                         </NavLink>

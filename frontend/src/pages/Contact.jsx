@@ -17,7 +17,7 @@ export default function Contact() {
   const formRef = useRef();
 
   // API URL
-  const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000');
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,11 +41,15 @@ export default function Contact() {
       const data = await response.json();
       if (!data.success) {
         console.error('Backend save failed:', data.error);
-        // Continue to EmailJS regardless, or handle error?
-        // User probably cares more about EmailJS working if that's their primary notification.
+        alert('Failed to save message to server: ' + data.error);
+        setIsSubmitting(false);
+        return;
       }
     } catch (err) {
       console.error('API Error:', err);
+      alert('Network error: Failed to connect to server. Please try again later.');
+      setIsSubmitting(false);
+      return;
     }
 
     // 2. Send Email via EmailJS
@@ -56,9 +60,8 @@ export default function Contact() {
     // Use a fallback just in case envs are not set, though user should set them.
     // If not set, we simulate success if backend save worked, or warn.
     if (!serviceId || !templateId || !publicKey) {
-      console.warn('EmailJS credentials missing.');
-      // If backend saved, show success anyway? 
-      // Let's assume yes.
+      // Backend saved successfully, but EmailJS is not configured.
+      // We count this as success since admin panel will have it.
       setSubmitted(true);
       setFormData({ name: '', email: '', phone: '', message: '' });
       setIsSubmitting(false);
