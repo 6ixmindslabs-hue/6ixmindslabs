@@ -26,7 +26,7 @@ export default function AdminCertificates() {
     const [profilePhoto, setProfilePhoto] = useState(null);
     const [certificateFile, setCertificateFile] = useState(null);
 
-    const itemsPerPage = 10;
+    const itemsPerPage = Infinity;
     const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000');
 
     useEffect(() => {
