@@ -3,6 +3,7 @@ import SEO from '../components/SEO';
 import Card from '../components/Card';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import localTeam from '../data/team.json';
 
 // Internal Modal Component
 const MemberModal = ({ member, onClose }) => {
@@ -82,9 +83,11 @@ export default function About() {
         const response = await fetch(`${apiUrl}/api/team`);
         const data = await response.json();
 
-        if (data.success) {
+        const teamData = data.success && data.data.length ? data.data : localTeam;
+
+        if (teamData.length) {
           // Sort by order and filter active
-          const activeMembers = data.data
+          const activeMembers = teamData
             .filter(m => m.active)
             .sort((a, b) => (a.order || 0) - (b.order || 0))
             .map(m => ({
@@ -101,6 +104,18 @@ export default function About() {
         }
       } catch (error) {
         console.error('Error fetching team:', error);
+        const activeMembers = localTeam
+          .filter(m => m.active)
+          .sort((a, b) => (a.order || 0) - (b.order || 0))
+          .map(m => ({
+            ...m,
+            image: m.photo || '',
+            alt: m.name + ' - ' + m.role,
+            responsibilities: m.responsibilities || [],
+            techStack: m.techStack || [],
+            projects: m.projects || []
+          }));
+        setTeam(activeMembers);
       } finally {
         setLoading(false);
       }

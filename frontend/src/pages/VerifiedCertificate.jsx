@@ -4,8 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '../components/Button';
 import Card from '../components/Card';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+import localCertificates from '../data/certificates.json';
 
 export default function VerifiedCertificate() {
     const { certificateId } = useParams();
@@ -18,6 +17,19 @@ export default function VerifiedCertificate() {
         fetchCertificate();
     }, [certificateId]);
 
+    const getLocalCertificate = () => {
+        const localCertificate = localCertificates.find(certificate => certificate.cert_id === certificateId);
+        if (!localCertificate) return null;
+
+        return {
+            ...localCertificate,
+            certificate_id: localCertificate.cert_id,
+            profile_photo_url: '',
+            certificate_file_url: '',
+            internship_duration: localCertificate.internship_duration || 'N/A'
+        };
+    };
+
     const fetchCertificate = async () => {
         try {
             const response = await fetch(`${API_URL}/api/certificates/verify/${certificateId}`);
@@ -26,9 +38,19 @@ export default function VerifiedCertificate() {
             if (result.success && result.valid) {
                 setData(result.data);
             } else {
+                const localCertificate = getLocalCertificate();
+                if (localCertificate) {
+                    setData(localCertificate);
+                    return;
+                }
                 setError('Invalid or Unverified Certificate ❌');
             }
         } catch (err) {
+            const localCertificate = getLocalCertificate();
+            if (localCertificate) {
+                setData(localCertificate);
+                return;
+            }
             setError('An error occurred while verifying the certificate.');
             console.error(err);
         } finally {

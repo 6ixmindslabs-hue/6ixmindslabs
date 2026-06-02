@@ -9,6 +9,15 @@ router.post('/', async (req, res) => {
     try {
         const { name, email, phone, subject, message } = req.body;
 
+        if (!supabase.isConfigured && process.env.NODE_ENV !== 'production') {
+            return res.status(201).json({
+                success: true,
+                message: 'Message accepted in local-only mode. Configure Supabase to persist messages.',
+                data: { name, email, phone, subject, message, status: 'local-only' },
+                source: 'local'
+            });
+        }
+
         // Attempt to insert with phone number
         let { data, error } = await supabase
             .from('messages')

@@ -137,6 +137,11 @@ app.use((err, req, res, next) => {
 const connectDB = async () => {
     try {
         const supabase = require('./config/supabaseClient');
+        if (!supabase.isConfigured) {
+            console.warn('Supabase credentials not found. Skipping database connection check.');
+            return;
+        }
+
         const { data, error } = await supabase.from('team_members').select('count', { count: 'exact', head: true });
 
         if (error && error.code !== '42P01') { // 42P01 is "undefined_table" which means connection worked but table missing

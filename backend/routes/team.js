@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const supabase = require('../config/supabaseClient');
 const { protect, authorize } = require('../middleware/auth');
+const localTeamData = require('../../frontend/src/data/team.json');
 
 // Helper to map DB columns (snake_case) to Frontend model (camelCase)
 const mapToModel = (dbRow) => {
@@ -59,6 +60,14 @@ const mapToDB = (body) => {
 // @access  Public
 router.get('/', async (req, res) => {
     try {
+        if (!supabase.isConfigured) {
+            const mappedLocalData = localTeamData.map(member => ({
+                _id: member.id,
+                ...member
+            }));
+            return res.json({ success: true, count: mappedLocalData.length, data: mappedLocalData, source: 'local' });
+        }
+
         const { data, error } = await supabase
             .from('team_members')
             .select('*')

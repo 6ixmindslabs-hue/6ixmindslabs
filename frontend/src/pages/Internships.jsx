@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Card from '../components/Card';
 import Button from '../components/Button';
-// import internships from '../data/internships.json'; // REMOVED
+import localInternships from '../data/internships.json';
 
 export default function Internships() {
   const { slug } = useParams();
@@ -29,12 +29,14 @@ export default function Internships() {
       const response = await fetch(`${API_URL}/api/internships`);
       const data = await response.json();
       if (data.success) {
-        setInternships(data.data);
+        setInternships(data.data.length ? data.data : localInternships);
       } else {
         console.error('Failed to fetch internships');
+        setInternships(localInternships);
       }
     } catch (error) {
       console.error('Error fetching internships:', error);
+      setInternships(localInternships);
     } finally {
       setLoading(false);
     }
@@ -71,7 +73,7 @@ export default function Internships() {
     // START ADAPTER LOGIC because DB is simpler than original JSON structure
     // We will assume the DB 'price' and 'duration' are the defaults.
     // And we'll construct a mock 'durationOptions' object to satisfy the existing JSX.
-    const durationOptions = {
+    const durationOptions = internship.durationOptions || {
       '2Weeks': {
         durationLabel: internship.duration || '2 Weeks',
         price: internship.price || 2000,

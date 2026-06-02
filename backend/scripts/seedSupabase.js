@@ -1,8 +1,12 @@
-const path = require('path');
-const teamData = require('../../src/data/team.json');
+const teamData = require('../../frontend/src/data/team.json');
 const supabase = require('../config/supabaseClient');
 
 const seedTeam = async () => {
+    if (!supabase.isConfigured) {
+        console.error('Supabase is not configured. Copy backend/.env.example to backend/.env and set SUPABASE_URL and SUPABASE_KEY before seeding.');
+        return;
+    }
+
     console.log('🌱 Seeding team members to Supabase from src/data/team.json...');
     console.log(`Found ${teamData.length} members to seed.`);
 

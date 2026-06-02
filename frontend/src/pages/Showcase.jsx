@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import SEO from '../components/SEO';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
 
 export default function Showcase() {
     const [items, setItems] = useState([]);

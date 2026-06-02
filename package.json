@@ -1,6 +1,18 @@
 {
-  "dependencies": {
-    "@supabase/supabase-js": "^2.89.0",
-    "dotenv": "^17.2.3"
+  "name": "6ixmindslabs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local runner for the 6ixminds Labs frontend and backend.",
+  "scripts": {
+    "install:all": "npm install --prefix frontend && npm install --prefix backend",
+    "dev": "concurrently -k -n backend,frontend -c blue,green \"npm run dev --prefix backend\" \"npm run dev --prefix frontend -- --host 0.0.0.0\"",
+    "dev:frontend": "npm run dev --prefix frontend -- --host 0.0.0.0",
+    "dev:backend": "npm run dev --prefix backend",
+    "build": "npm run build --prefix frontend",
+    "preview": "npm run preview --prefix frontend -- --host 0.0.0.0",
+    "start": "npm run start --prefix backend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }

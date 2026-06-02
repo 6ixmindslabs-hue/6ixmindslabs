@@ -37,6 +37,10 @@ async function uploadToSupabase(file, bucket, path) {
 // @access  Public (filtered) / Private (all)
 router.get('/', async (req, res) => {
     try {
+        if (!supabase.isConfigured) {
+            return res.json({ success: true, count: 0, data: [], source: 'local' });
+        }
+
         const isAdmin = req.headers.authorization; // Simple check, or just query params.
         // Better: Query param ?view=admin (and verify token logic if needed, but get is usually public)
         // Actually, let's keep it simple. Public calls get published items.

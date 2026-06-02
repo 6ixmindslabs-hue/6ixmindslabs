@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import localTeam from '../data/team.json';
 
 export default function TeamSection() {
     const [teamMembers, setTeamMembers] = useState([]);
@@ -14,18 +15,18 @@ export default function TeamSection() {
                 const data = await response.json();
 
                 if (data.success) {
-                    const activeMembers = data.data
+                    const teamData = data.data.length ? data.data : localTeam;
+                    const activeMembers = teamData
                         .filter(member => member.active)
                         .sort((a, b) => a.order - b.order);
                     setTeamMembers(activeMembers);
                 } else {
                     console.error('Failed to fetch team data');
-                    // Fallback to local storage or empty?
-                    // const savedTeam = localStorage.getItem('teamMembers');
-                    // if (savedTeam) ...
+                    setTeamMembers(localTeam.filter(member => member.active).sort((a, b) => a.order - b.order));
                 }
             } catch (error) {
                 console.error('Error loading team data:', error);
+                setTeamMembers(localTeam.filter(member => member.active).sort((a, b) => a.order - b.order));
             }
         };
 

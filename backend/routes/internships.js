@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const supabase = require('../config/supabaseClient');
 const { protect, authorize } = require('../middleware/auth');
+const localInternships = require('../../frontend/src/data/internships.json');
 
 // Map DB snake_case to Frontend camelCase
 const mapToModel = (row) => ({
@@ -36,6 +37,10 @@ const mapToDB = (body) => ({
 // @desc    Get all internships
 router.get('/', async (req, res) => {
     try {
+        if (!supabase.isConfigured) {
+            return res.json({ success: true, count: localInternships.length, data: localInternships, source: 'local' });
+        }
+
         const { data, error } = await supabase
             .from('internships')
             .select('*')
@@ -52,6 +57,12 @@ router.get('/', async (req, res) => {
 // @desc    Get single internship
 router.get('/:id', async (req, res) => {
     try {
+        if (!supabase.isConfigured) {
+            const internship = localInternships.find(item => String(item.id) === req.params.id || item.slug === req.params.id);
+            if (!internship) return res.status(404).json({ success: false, error: 'Internship not found' });
+            return res.json({ success: true, data: internship, source: 'local' });
+        }
+
         const { data, error } = await supabase
             .from('internships')
             .select('*')

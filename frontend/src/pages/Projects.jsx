@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Card from '../components/Card';
 import Button from '../components/Button';
-// import projects from '../data/projects.json'; // REMOVED
+import localProjects from '../data/projects.json';
 
 export default function Projects() {
   const { slug } = useParams();
@@ -28,12 +28,14 @@ export default function Projects() {
       const response = await fetch(`${API_URL}/api/projects`);
       const data = await response.json();
       if (data.success) {
-        setProjects(data.data);
+        setProjects(data.data.length ? data.data : localProjects);
       } else {
         console.error('Failed to fetch projects');
+        setProjects(localProjects);
       }
     } catch (error) {
       console.error('Error fetching projects:', error);
+      setProjects(localProjects);
     } finally {
       setLoading(false);
     }

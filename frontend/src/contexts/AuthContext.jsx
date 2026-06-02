@@ -80,6 +80,7 @@ export const AuthProvider = ({ children }) => {
     const changePassword = async (currentPassword, newPassword) => {
         try {
             const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+            const token = localStorage.getItem('admin_token');
             const response = await fetch(`${API_URL}/api/admin/change-password`, {
                 method: 'POST',
                 headers: {

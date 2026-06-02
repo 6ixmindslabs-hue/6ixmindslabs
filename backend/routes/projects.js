@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const supabase = require('../config/supabaseClient');
 const { protect, authorize } = require('../middleware/auth');
+const localProjects = require('../../frontend/src/data/projects.json');
 
 // Map DB snake_case to Frontend camelCase
 const mapToModel = (row) => ({
@@ -37,6 +38,10 @@ const mapToDB = (body) => ({
 // @access  Public
 router.get('/', async (req, res) => {
     try {
+        if (!supabase.isConfigured) {
+            return res.json({ success: true, count: localProjects.length, data: localProjects, source: 'local' });
+        }
+
         const { data, error } = await supabase
             .from('projects')
             .select('*')
@@ -54,6 +59,12 @@ router.get('/', async (req, res) => {
 // @access  Public
 router.get('/:id', async (req, res) => {
     try {
+        if (!supabase.isConfigured) {
+            const project = localProjects.find(item => String(item.id) === req.params.id || item.slug === req.params.id);
+            if (!project) return res.status(404).json({ success: false, error: 'Project not found' });
+            return res.json({ success: true, data: project, source: 'local' });
+        }
+
         const { data, error } = await supabase
             .from('projects')
             .select('*')

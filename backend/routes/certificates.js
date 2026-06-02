@@ -3,6 +3,18 @@ const router = express.Router();
 const supabase = require('../config/supabaseClient');
 const { protect, authorize } = require('../middleware/auth');
 const multer = require('multer');
+const localCertificates = require('../../frontend/src/data/certificates.json');
+
+const mapLocalCertificate = (certificate) => ({
+    ...certificate,
+    certificate_id: certificate.cert_id,
+    certificate_number: certificate.cert_id?.split('-').pop(),
+    profile_photo_url: '',
+    certificate_file_url: '',
+    internship_duration: certificate.internship_duration || 'N/A',
+    start_date: null,
+    end_date: null
+});
 
 // Configure multer for file uploads
 const multerUpload = multer({
@@ -125,6 +137,14 @@ router.get('/', protect, authorize('admin', 'super-admin'), async (req, res) => 
 // @access  Public
 router.get('/verify/:id', async (req, res) => {
     try {
+        if (!supabase.isConfigured) {
+            const certificate = localCertificates.find(item => item.cert_id === req.params.id);
+            if (!certificate) {
+                return res.status(404).json({ success: false, error: 'Invalid or unverified certificate' });
+            }
+            return res.json({ success: true, valid: true, data: mapLocalCertificate(certificate), source: 'local' });
+        }
+
         const { data, error } = await supabase
             .from('certificates')
             .select('*')
