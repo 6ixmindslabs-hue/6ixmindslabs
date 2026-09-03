@@ -56,9 +56,9 @@ export default function Home() {
   ];
 
   const stats = [
-    { number: '60', label: 'Students Trained' },
-    { number: '5+', label: 'Projects Delivered' },
-    { number: '100%', label: 'Satisfaction Rate' },
+    { number: '200', label: 'Students Trained' },
+    { number: '20+', label: 'Projects Delivered' },
+    { number: '97.6%', label: 'Satisfaction Rate' },
     { number: '4', label: 'Core Services' },
   ]; // Stats updated
 
