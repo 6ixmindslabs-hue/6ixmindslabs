@@ -200,14 +200,14 @@ Both pages include:
 
 ### For Team Management:
 1. Connect to backend API
-2. Store data in MongoDB
+2. Store data in Supabase (PostgreSQL)
 3. Add bulk upload (CSV)
 4. Add team member ordering/drag-drop
 5. Add profile verification
 
 ### For Page Editor:
 1. Connect to backend API
-2. Store content in MongoDB
+2. Store content in Supabase (PostgreSQL)
 3. Add rich text editor (WYSIWYG)
 4. Add image upload for backgrounds
 5. Add preview before publish

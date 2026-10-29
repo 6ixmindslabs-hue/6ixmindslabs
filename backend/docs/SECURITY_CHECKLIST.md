@@ -31,8 +31,8 @@
 
 ### ✅ Database Security
 
-- [ ] **MongoDB Configuration**
-  - Use MongoDB Atlas or managed database service in production
+- [ ] **Supabase / Database Configuration**
+  - Use Supabase managed PostgreSQL database in production
   - Enable authentication and authorization
   - Create database user with minimal required permissions
   - Enable encryption at rest
@@ -44,9 +44,9 @@
   - Restrict database access by IP whitelist if possible
 
 - [ ] **Data Validation**
-  - Implement schema validation in MongoDB
-  - Sanitize all user inputs to prevent NoSQL injection
-  - Use Mongoose schema validators
+  - Implement schema constraints and validation in PostgreSQL / Supabase
+  - Sanitize and validate all user inputs to prevent injection attacks
+  - Use database constraints and input validators
 
 ---
 
@@ -179,7 +179,7 @@
   - Rotate secrets regularly (every 90 days recommended)
 
 - [ ] **SQL/NoSQL Injection Prevention**
-  - Use parameterized queries (Mongoose automatically does this)
+  - Use parameterized queries (Supabase SDK handles parameterization automatically)
   - Never concatenate user input into queries
   - Use `validator.escape()` for additional safety
 
@@ -260,7 +260,7 @@
    export NODE_ENV=production
    
    # Verify environment variables
-   env | grep -E 'JWT|MONGO|AWS'
+   env | grep -E 'JWT|SUPABASE|AWS'
    ```
 
 3. **Database Migration**
@@ -363,7 +363,7 @@ If a security breach is suspected:
 
 - **Node.js Security Best Practices:** https://nodejs.org/en/docs/guides/security/
 - **OWASP Top 10:** https://owasp.org/www-project-top-ten/
-- **MongoDB Security Checklist:** https://docs.mongodb.com/manual/administration/security-checklist/
+- **Supabase Security Guide:** https://supabase.com/docs/guides/database/postgres/row-level-security
 - **npm Security Advisories:** https://www.npmjs.com/advisories
 
 ---

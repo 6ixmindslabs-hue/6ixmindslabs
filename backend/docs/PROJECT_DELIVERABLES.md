@@ -104,7 +104,7 @@ This project includes a **complete, production-ready admin panel** for the 6ixmi
   - Express.js setup
   - Security middleware (helmet, cors)
   - Rate limiting configured
-  - MongoDB connection
+  - Supabase client connection
   - Error handling
   - Health check endpoint
   - Graceful shutdown
@@ -245,7 +245,7 @@ http://localhost:5173/admin/login
 2. **Configure environment:**
    ```bash
    cp .env.example .env
-   # Edit .env with your MongoDB URI and secrets
+   # Edit .env with your Supabase URL, key, and secrets
    ```
 
 3. **Seed admin user:**
@@ -384,7 +384,7 @@ http://localhost:5173/admin/login
 **Backend:**
 - Node.js
 - Express.js
-- MongoDB + Mongoose
+- Supabase (PostgreSQL)
 - bcryptjs
 - jsonwebtoken
 - helmet

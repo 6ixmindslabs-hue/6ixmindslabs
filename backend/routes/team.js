@@ -8,7 +8,7 @@ const localTeamData = require('../../frontend/src/data/team.json');
 const mapToModel = (dbRow) => {
     if (!dbRow) return null;
     return {
-        _id: dbRow.id, // Keep _id for compatibility with existing frontend using Mongoose
+        _id: dbRow.id, // Compatibility alias for frontend
         id: dbRow.id,
         name: dbRow.name,
         role: dbRow.role,

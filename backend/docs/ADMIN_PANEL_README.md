@@ -138,7 +138,7 @@ Form-based certificate creation with auto-generated IDs.
 
 ### Backend (Expected)
 - **Node.js** with **Express.js**
-- **MongoDB** with **Mongoose**
+- **Supabase** (PostgreSQL)
 - **bcryptjs** - Password hashing
 - **jsonwebtoken** - JWT authentication
 - **multer** - File uploads
@@ -158,7 +158,7 @@ Form-based certificate creation with auto-generated IDs.
 ### Prerequisites
 - Node.js >= 18.x
 - npm or yarn
-- MongoDB (local or Atlas)
+- Supabase project (URL & Keys)
 
 ### Frontend Setup
 
@@ -358,7 +358,7 @@ See [SECURITY_CHECKLIST.md](./docs/SECURITY_CHECKLIST.md) for complete pre-deplo
 
 **Steps:**
 1. Set environment variables on platform
-2. Connect MongoDB (Atlas recommended)
+2. Configure Supabase (SUPABASE_URL and SUPABASE_KEY)
 3. Deploy from git repository
 4. Run seed script to create admin user
 5. Test login and functionality
@@ -458,7 +458,7 @@ Unauthorized copying, distribution, or modification is prohibited.
 - React team for the amazing framework
 - Tailwind CSS for the utility-first CSS
 - Framer Motion for smooth animations
-- MongoDB team for the robust database
+- Supabase team for the robust database platform
 - All open-source contributors
 
 ---
